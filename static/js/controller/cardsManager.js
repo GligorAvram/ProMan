@@ -44,7 +44,8 @@ function deleteButtonHandler(clickEvent) {
 
 
 function toggleRenameCard(dblclick) {
-    let cardId = dblclick.originalTarget.parentElement.getAttribute("data-card-id");
+    let cardId = dblclick.originalTarget.getAttribute("data-card-id");
+    console.log(cardId)
 
     document.getElementById(`card${cardId}-normal`).style.display = "none";
     document.getElementById(`card${cardId}-hidden`).style.display = "inline-block";

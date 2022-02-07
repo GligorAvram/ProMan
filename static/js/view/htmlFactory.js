@@ -53,7 +53,7 @@ function boardBuilder(board) {
 function cardBuilder(card) {
     return `<div class="card d-flex flex-row justify-content-around">
                 <span class="clickable-card-title rename-normal" data-card-id="${card.id}" id="card${card.id}-normal">
-                    <span id="card${card.id}-title">${card.title}</span>
+                    <span id="card${card.id}-title" data-card-id="${card.id}">${card.title}</span>
                     <button class="card-delete" data-card-id="${card.id}"><i class="fas fa-chevron-down"></i></button>
                 </span>
 

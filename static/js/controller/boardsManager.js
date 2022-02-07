@@ -121,6 +121,7 @@ function cancelRenameBoard(clickEvent) {
 
 function addStatus(clickEvent) {
     console.log("adding a status")
+    }
 
 function commitNewStatus(clickEvent) {
     clickEvent.preventDefault();

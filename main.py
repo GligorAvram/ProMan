@@ -35,6 +35,16 @@ def get_cards_for_board(board_id: int):
     return queries.get_cards_for_board(board_id)
 
 
+@app.route("/api/boards/<int:board_id>")
+@json_response
+def get_board(board_id: int):
+    """
+    A speciffic board board
+    :param board_id: id of the requested board
+    """
+    return queries.get_board(board_id)
+
+
 def main():
     app.run(debug=True)
 

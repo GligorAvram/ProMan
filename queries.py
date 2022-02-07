@@ -32,3 +32,8 @@ def get_cards_for_board(board_id):
         , {"board_id": board_id})
 
     return matching_cards
+
+
+def get_board(board_id):
+    pass
+

@@ -42,16 +42,16 @@ function deleteButtonHandler(clickEvent) {
 }
 
 function toggleRenameStatus(dblclick) {
-    let statusId = dblclick.originalTarget.parentElement.getAttribute("data-status-id");
-    let boardId = dblclick.originalTarget.parentElement.getAttribute("data-board-id");
+    let statusId = dblclick.target.parentElement.getAttribute("data-status-id");
+    let boardId = dblclick.target.parentElement.getAttribute("data-board-id");
     document.getElementById(`rename-status${statusId}-normal-board${boardId}`).style.display = "none";
     document.getElementById(`rename-status${statusId}-hidden-board${boardId}`).style.display = "inline-block";
 }
 
 function renameCancel(clickEvent){
     clickEvent.preventDefault();
-    let statusId = clickEvent.originalTarget.getAttribute("data-status-id");
-    let boardId = clickEvent.originalTarget.getAttribute("data-board-id");
+    let statusId = clickEvent.target.getAttribute("data-status-id");
+    let boardId = clickEvent.target.getAttribute("data-board-id");
     document.getElementById(`rename-status${statusId}-normal-board${boardId}`).style.display = "inline-block";
     document.getElementById(`rename-status${statusId}-hidden-board${boardId}`).style.display = "none";
 }
@@ -59,9 +59,9 @@ function renameCancel(clickEvent){
 function renameCommit(clickEvent){
     clickEvent.preventDefault();
 
-    let statusId = clickEvent.originalTarget.getAttribute("data-status-id");
-    let boardId = clickEvent.originalTarget.getAttribute("data-board-id");
-    let newName = clickEvent.originalTarget.previousElementSibling.value;
+    let statusId = clickEvent.target.getAttribute("data-status-id");
+    let boardId = clickEvent.target.getAttribute("data-board-id");
+    let newName = clickEvent.target.previousElementSibling.value;
 
     document.getElementById(`rename-status${statusId}-normal-board${boardId}`).firstElementChild.innerText = newName;
 

@@ -44,8 +44,7 @@ function deleteButtonHandler(clickEvent) {
 
 
 function toggleRenameCard(dblclick) {
-    let cardId = dblclick.originalTarget.getAttribute("data-card-id");
-    console.log(cardId)
+    let cardId = dblclick.target.getAttribute("data-card-id");
 
     document.getElementById(`card${cardId}-normal`).style.display = "none";
     document.getElementById(`card${cardId}-hidden`).style.display = "inline-block";
@@ -53,7 +52,7 @@ function toggleRenameCard(dblclick) {
 
 function cancelCardRename(clickEvent) {
     clickEvent.preventDefault();
-    let cardId = clickEvent.originalTarget.parentElement.getAttribute("data-card-id");
+    let cardId = clickEvent.target.parentElement.getAttribute("data-card-id");
 
     document.getElementById(`card${cardId}-normal`).style.display = "inline-block";
     document.getElementById(`card${cardId}-hidden`).style.display = "none";
@@ -61,8 +60,8 @@ function cancelCardRename(clickEvent) {
 
 function commitCardRename(clickEvent) {
     clickEvent.preventDefault();
-    let cardId = clickEvent.originalTarget.getAttribute("data-card-id");
-    let newName = clickEvent.originalTarget.previousElementSibling.value;
+    let cardId = clickEvent.target.getAttribute("data-card-id");
+    let newName = clickEvent.target.previousElementSibling.value;
     dataHandler.renameCard(cardId, newName);
     document.getElementById(`card${cardId}-title`).innerText = newName;
     cancelCardRename(clickEvent);

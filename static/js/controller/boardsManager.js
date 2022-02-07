@@ -82,8 +82,8 @@ function makeNewBoard(board) {
 
 function renameBoard(clickEvent){
     clickEvent.preventDefault()
-    let newName = clickEvent.originalTarget.previousElementSibling.value;
-    let boardId = clickEvent.originalTarget.getAttribute("data-board-id");
+    let newName = clickEvent.target.previousElementSibling.value;
+    let boardId = clickEvent.target.getAttribute("data-board-id");
     document.getElementById(`board${boardId}-title`).innerText = newName;
     dataHandler.renameBoard(boardId, newName);
     cancelRenameBoard(clickEvent);
@@ -103,25 +103,25 @@ function addCard(clickEvent) {
 }
 
 function commitNewBoard(clickEvent) {
-     console.log("save board " + clickEvent.originalTarget.getAttribute("data-board-id"))
+     console.log("save board " + clickEvent.target.getAttribute("data-board-id"))
 }
 
 function toggleRenameBoard(dblclick) {
-     let boardId = dblclick.originalTarget.parentElement.getAttribute("data-board-id");
+     let boardId = dblclick.target.parentElement.getAttribute("data-board-id");
      document.getElementById(`rename-board${boardId}-normal`).style.display = "none";
      document.getElementById(`rename-board${boardId}-hidden`).style.display = "inline-block";
 }
 
 function cancelRenameBoard(clickEvent) {
      clickEvent.preventDefault();
-     let boardId = clickEvent.originalTarget.getAttribute("data-board-id");
+     let boardId = clickEvent.target.getAttribute("data-board-id");
      document.getElementById(`rename-board${boardId}-normal`).style.display = "inline-block";
      document.getElementById(`rename-board${boardId}-hidden`).style.display = "none";
 }
 
 function addStatus(clickEvent) {
     console.log("adding a status")
-    }
+}
 
 function commitNewStatus(clickEvent) {
     clickEvent.preventDefault();
@@ -146,7 +146,7 @@ function cancelCard(clickEvent) {
 
 
 function refreshBoard(clickEvent){
-    // const board = clickEvent.originalTarget.closest("section")
+    // const board = clickEvent.target.closest("section")
     // const root = document.getElementById("root");
     // let index = Array.from(root.children).indexOf(board);
     // let prevBoardId;

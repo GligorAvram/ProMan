@@ -90,85 +90,21 @@ function renameBoard(clickEvent){
 }
 
 function deleteBoard(clickEvent) {
-    if(clickEvent.originalTarget.getAttribute("data-board-id") != 0){
-        dataHandler.deleteBoard(clickEvent.originalTarget.getAttribute("data-board-id"))
-    }
-
-    let toDelete = clickEvent.originalTarget.closest("section");
-    toDelete.parentNode.removeChild(toDelete);
+    console.log("deleting a board")
 }
 
 function addNewBoard(clickEvent) {
-    if (document.querySelector(`.save-board[data-board-id="0"]`) ===  null){
-        let newBoard = {
-            id: 0,
-            title: "New board"
-        }
-        const boardBuilder = htmlFactory(htmlTemplates.freshBoard);
-        const content = boardBuilder(newBoard);
+    console.log("adding a new board")
+}
 
-        domManager.addChild("#root", content, "first");
 
-        domManager.addEventListener(
-            `.board-add-card[data-board-id="0"]`,
-            "click",
-        addCard
-        );
-
-        domManager.addEventListener(
-            `.delete-board[data-board-id="0"]`,
-            "click",
-        deleteBoard
-        );
-
-        domManager.addEventListener(
-        `.save-board[data-board-id="0"]`,
-        "click",
-        commitNewBoard
-        );
-    }
-    else{
-        alert("Please finish submitting your existing board draft");
-    }
+function addCard(clickEvent) {
+    console.log("adding a new card")
 }
 
 function commitNewBoard(clickEvent) {
      console.log("save board " + clickEvent.originalTarget.getAttribute("data-board-id"))
 }
-
-function addCard(clickEvent) {
-    if(document.querySelector("#card0-title") === null) {
-        let boardId = clickEvent.originalTarget.getAttribute("data-board-id");
-        let statusId = document.getElementById(`board-columns-table${boardId}`).firstElementChild.getAttribute("data-status-id");
-        let order = document.getElementById(`board${boardId}-column${statusId}`).children.length + 1;
-        let card = {
-            id: 0,
-            title: "new card",
-            board_id: boardId,
-            status_id: statusId,
-            card_order: order
-        }
-        const cardBuilder = htmlFactory(htmlTemplates.freshCard);
-        const content = cardBuilder(card);
-        domManager.addChild(`#board${boardId}-column${statusId}`, content, "last");
-
-        domManager.addEventListener(
-            `.board-save-card[data-card-id="0"]`,
-            "click",
-        saveCard
-        );
-
-        domManager.addEventListener(
-            `.board-cancel-card[data-card-id="0"]`,
-            "click",
-        cancelCard
-        );
-    }
-    else {
-        alert("please finish submitting your drafted card")
-    }
-}
-
 
 function toggleRenameBoard(dblclick) {
      let boardId = dblclick.originalTarget.parentElement.getAttribute("data-board-id");
@@ -184,36 +120,7 @@ function cancelRenameBoard(clickEvent) {
 }
 
 function addStatus(clickEvent) {
-    let boardId = clickEvent.originalTarget.getAttribute("data-board-id");
-    const container = document.getElementById(`board-columns-table${boardId}`);
-
-    if (document.querySelector(`.board-column[data-status-id="0"]`) ===  null){
-        let newColumn = {
-            id: 0,
-            title: "New status",
-        }
-        const columnBuilder = htmlFactory(htmlTemplates.freshColumn);
-        const content = columnBuilder(newColumn, boardId);
-
-        domManager.addChild(`#board-columns-table${boardId}`, content, "last");
-
-        domManager.addEventListener(
-        `.column-rename[data-status-id="0"]`,
-        "click",
-        commitNewStatus
-        );
-
-        domManager.addEventListener(
-        `.column-rename-cancel[data-status-id="0"]`,
-        "click",
-        cancelNewStatus
-        );
-
-    }
-    else{
-        alert("Please finish submitting your existing column draft");
-    }
-}
+    console.log("adding a status")
 
 function commitNewStatus(clickEvent) {
     clickEvent.preventDefault();
@@ -227,12 +134,7 @@ function cancelNewStatus(clickEvent) {
 }
 
 function saveCard(clickEvent) {
-    clickEvent.preventDefault();
-    let title = document.getElementById("new-card-input").value;
-    let boardId = document.getElementById("temp-card").parentElement.parentElement.parentElement.parentElement.getAttribute("data-board-id");
-    let statusId = document.getElementById("temp-card").parentElement.parentElement.getAttribute("data-status-id");
-    let cardData = dataHandler.createNewCard(title, boardId, statusId)
-    refreshBoard(clickEvent);
+    console.log("saving a card")
 }
 
 function cancelCard(clickEvent) {
@@ -243,25 +145,25 @@ function cancelCard(clickEvent) {
 
 
 function refreshBoard(clickEvent){
-    const board = clickEvent.originalTarget.closest("section")
-    const root = document.getElementById("root");
-    let index = Array.from(root.children).indexOf(board);
-    let prevBoardId;
-     try {
-        prevBoardId = board.previousElementSibling.getAttribute("data-board-id");
-     }
-     catch(error) {}
-    dataHandler.getBoard(board.getAttribute("data-board-id"))
-    .then(data => {
-        const newBoard = makeNewBoard(data[0]);
-        root.removeChild(board);
-        if(index  === 0){
-            domManager.addChild("#root", newBoard, "first");
-            addBoardEventListeners(data[0].id)
-        }
-        else{
-            domManager.addChild(`#accordion${prevBoardId}`, newBoard, "after");
-            addBoardEventListeners(data[0].id)
-        }
-    })
+    // const board = clickEvent.originalTarget.closest("section")
+    // const root = document.getElementById("root");
+    // let index = Array.from(root.children).indexOf(board);
+    // let prevBoardId;
+    //  try {
+    //     prevBoardId = board.previousElementSibling.getAttribute("data-board-id");
+    //  }
+    //  catch(error) {}
+    // dataHandler.getBoard(board.getAttribute("data-board-id"))
+    // .then(data => {
+    //     const newBoard = makeNewBoard(data[0]);
+    //     root.removeChild(board);
+    //     if(index  === 0){
+    //         domManager.addChild("#root", newBoard, "first");
+    //         addBoardEventListeners(data[0].id)
+    //     }
+    //     else{
+    //         domManager.addChild(`#accordion${prevBoardId}`, newBoard, "after");
+    //         addBoardEventListeners(data[0].id)
+    //     }
+    // })
 }

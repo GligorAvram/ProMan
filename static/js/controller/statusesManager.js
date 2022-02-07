@@ -38,12 +38,7 @@ export let statusesManager = {
 
 
 function deleteButtonHandler(clickEvent) {
-    let statusId = clickEvent.originalTarget.parentElement.getAttribute("data-status-id");
-    let boardId = clickEvent.originalTarget.closest("section").getAttribute("data-board-id");
-    dataHandler.deleteStatusCards(boardId, statusId);
-
-    clickEvent.originalTarget.parentElement.parentElement.parentElement.parentElement
-        .removeChild(clickEvent.originalTarget.parentElement.parentElement.parentElement);
+    console.log("delete button handled");
 }
 
 function toggleRenameStatus(dblclick) {

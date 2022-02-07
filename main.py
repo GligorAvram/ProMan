@@ -15,7 +15,7 @@ from helpers import is_access_token_valid, is_id_token_valid, config
 from user import User
 from util import json_response
 import mimetypes
-import queires
+import queries
 
 mimetypes.add_type('application/javascript', '.js')
 app = Flask(__name__)
@@ -39,14 +39,14 @@ def main():
 
 @app.route("/")
 def index():
-    all_cards = queires.get_cards()
+    all_cards = queries.get_cards()
     return render_template('index.html', cards=all_cards)
 
 
 @app.route("/api/boards")
 @json_response
 def get_boards():
-    return queires.get_boards()
+    return queries.get_boards()
 
 
 @app.route("/status/add", methods=["POST"])
@@ -54,13 +54,13 @@ def get_boards():
 def add_status():
     parameters = flask.request.json
     title = parameters["title"].lower()
-    return queires.add_status(title), 200
+    return queries.add_status(title), 200
 
 
 @app.route("/api/boards/<board_id>")
 @json_response
 def get_board(board_id):
-    return queires.get_board(board_id), 200
+    return queries.get_board(board_id), 200
 
 
 @app.route("/board/rename", methods=["POST"])
@@ -69,7 +69,7 @@ def rename_board():
     parameters = flask.request.json
     board_id = parameters["id"]
     new_name = parameters["name"]
-    return queires.rename_board(board_id, new_name)
+    return queries.rename_board(board_id, new_name)
 
 
 @app.route("/card/rename", methods=["POST"])
@@ -78,7 +78,7 @@ def rename_card():
     parameters = flask.request.json
     card_id = parameters["id"]
     new_name = parameters["name"]
-    return queires.rename_card(card_id, new_name)
+    return queries.rename_card(card_id, new_name)
 
 
 @app.route("/status/rename", methods=["POST"])
@@ -88,13 +88,13 @@ def rename_status():
     board_id = parameters["board_id"]
     status_id = parameters["status_id"]
     new_name = parameters["name"]
-    if queires.check_if_status_exists(new_name) == 0:
-        new_id = queires.insert_new_status(new_name)
-        return queires.changeCardTitles(board_id, status_id, new_id)
+    if queries.check_if_status_exists(new_name) == 0:
+        new_id = queries.insert_new_status(new_name)
+        return queries.changeCardTitles(board_id, status_id, new_id)
 
-    new_id = queires.get_status_id(new_name)
-    if queires.check_if_status_changable(board_id, new_id) == 0:
-        return queires.changeCardTitles(board_id, status_id, new_id)
+    new_id = queries.get_status_id(new_name)
+    if queries.check_if_status_changable(board_id, new_id) == 0:
+        return queries.changeCardTitles(board_id, status_id, new_id)
     else:
         return 200, ""
 
@@ -106,38 +106,38 @@ def add_card():
     board_id = parameters["board_id"]
     status_id = parameters["status_id"]
     title = parameters["title"]
-    new_card = queires.add_card(title, board_id, status_id)
+    new_card = queries.add_card(title, board_id, status_id)
     return new_card
 
 
 @app.route("/api/boards/delete/<board_id>", methods=["DELETE"])
 @json_response
 def delete_board(board_id):
-    return queires.delete_board(board_id), ""
+    return queries.delete_board(board_id), ""
 
 
 @app.route("/api/<board_id>/statuses")
 @json_response
 def get_statuses(board_id):
-    return queires.get_statuses_for_board(board_id)
+    return queries.get_statuses_for_board(board_id)
 
 
 @app.route("/api/statuses/<status_id>")
 @json_response
 def get_status(status_id):
-    return queires.get_status(status_id)
+    return queries.get_status(status_id)
 
 
 @app.route("/api/boards/<int:board_id>/cards/")
 @json_response
 def get_cards_for_board(board_id: int):
-    return queires.get_cards_for_board(board_id)
+    return queries.get_cards_for_board(board_id)
 
 
 @app.route("/api/cards/delete/<card_id>", methods=["DELETE"])
 @json_response
 def delete_card(card_id: int):
-    return queires.delete_card(card_id), ""
+    return queries.delete_card(card_id), ""
 
 
 @app.route("/api/section/delete", methods=["DELETE"])
@@ -145,7 +145,7 @@ def delete_card(card_id: int):
 def delete_section():
     boardId = request.args.get("boardId")
     statusId = request.args.get("statusId")
-    return queires.deleteSectionCards(boardId, statusId), ""
+    return queries.deleteSectionCards(boardId, statusId), ""
 
 # okta
 @login_manager.user_loader

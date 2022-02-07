@@ -40,11 +40,7 @@ export let cardsManager = {
 };
 
 function deleteButtonHandler(clickEvent) {
-    dataHandler.deleteCard(clickEvent.originalTarget.parentElement.getAttribute("data-card-id"));
-    boardsManager.refreshBoard()
-    clickEvent.originalTarget.parentNode.parentNode.parentNode
-        .parentNode.removeChild(clickEvent.originalTarget.parentNode.parentNode.parentNode);
-}
+    console.log("delete button handled")}
 
 
 function toggleRenameCard(dblclick) {

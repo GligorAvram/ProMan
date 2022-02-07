@@ -1,7 +1,9 @@
-import {boardsManager} from "./controller/boardsManager.js";
+import { boardsManager } from "./controller/boardsManager.js";
 
 function init() {
-    boardsManager.loadBoards();
-}
+  boardsManager.loadBoards();
+  }
 
 init();
+
+

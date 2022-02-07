@@ -1,4 +1,6 @@
+.idea
+.vscode
+__pycache__
 venv
 .env
-_*/
-.*/
+client_secrets.json.dist

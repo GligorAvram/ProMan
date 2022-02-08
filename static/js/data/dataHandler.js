@@ -20,9 +20,18 @@ export let dataHandler = {
     .then(response => response.json());
   },
   getCard: async function (cardId) {
+    return fetch(`/api/card/${cardId}`)
+    .then(response => response.json());
   },
   createNewBoard: async function (boardTitle) {
-  },
+    console.log("creating new board")
+    let payload = {
+      title: boardTitle,
+      }
+    let response = await apiPost(`/boards/add`, payload);
+    console.log(response)
+    return response;
+},
   createNewCard: async function (cardTitle, boardId, statusId) {
         let payload = {
                        title: cardTitle,
@@ -89,26 +98,28 @@ async function apiGet(url) {
   }
 }
 
-async function apiPost(url, payload) {
-    let response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload)
-    })
-    .then(res => res.json())
-    return response
-}
-
-async function apiDelete(url) {
-    let del = fetch(url, {
-        method: "DELETE"
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-}
-
-async function apiPut(url) {}
+  
+  async function apiPost(url, payload) {
+      let response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      return response
+  }
+  
+  async function apiDelete(url) {
+      let del = fetch(url, {
+          method: "DELETE"
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+  
+  async function apiPut(url) {}
+  

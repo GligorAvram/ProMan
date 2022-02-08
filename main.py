@@ -98,6 +98,11 @@ def rename_status():
     else:
         return 200
 
+@app.route("/api/cards/<card_id>")
+@json_response
+def get_card(card_id):
+    return queries.get_card(card_id)
+
 
 @app.route("/api/card/add", methods=["POST"])
 @json_response
@@ -109,6 +114,14 @@ def add_card():
     new_card = queries.add_card(title, board_id, status_id)
     return new_card
 
+@app.route("/boards/add", methods=["POST"])
+@json_response
+def add_board():
+    parameters = flask.request.json
+    title = parameters["title"]
+    new_board = queries.add_board(title)
+    return new_board
+
 
 @app.route("/api/boards/delete/<board_id>", methods=["DELETE"])
 @json_response
@@ -119,6 +132,14 @@ def delete_board(board_id):
 @app.route("/api/<board_id>/statuses")
 @json_response
 def get_statuses(board_id):
+    #board_statuses=queries.get_statuses_for_board(board_id)
+    # for i in range(4):
+    #     status=queries.get_status(i+1)
+    #     for j in range(len(board_statuses)):
+    #         found=False
+    #         if status.keys[1]==board_statuses[j].keys[0]: found=True
+    #         if not found: board_statuses.append(status)
+    #return board_statuses
     return queries.get_statuses_for_board(board_id)
 
 

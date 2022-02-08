@@ -3,12 +3,12 @@ import { htmlFactory, htmlTemplates } from "../view/htmlFactory.js";
 import { domManager } from "../view/domManager.js";
 import { cardsManager } from "./cardsManager.js";
 import { statusesManager } from "./statusesManager.js";
-
+var itemName='';
 
 export let boardsManager = {
   loadBoards: async function () {
     const addButtonBuilder = htmlFactory(htmlTemplates.addButton);
-    const addButton = addButtonBuilder()
+    const addButton = addButtonBuilder();
     domManager.addChild("#root", addButton, "beforebegin");
 
     domManager.addEventListener(
@@ -22,10 +22,21 @@ export let boardsManager = {
 
         domManager.addChild("#root", newBoard, "last");
 
-        addBoardEventListeners(board.id)
+        addBoardEventListeners(board.id);
         }
-    }
-};
+    
+    const addModalBuiler=htmlFactory(htmlTemplates.addModal);
+    const addModalDialog=addModalBuiler();
+    domManager.addChild("#root",addModalDialog,"after");
+    domManager.addEventListener(
+        '#submitName',
+        "click",
+        getNewBoardName)
+    domManager.addEventListener(
+        '#cancelDialog',
+        "click",
+        abortCreateBoard);
+}};
 
 function addBoardEventListeners(boardId) {
     domManager.addEventListener(
@@ -91,10 +102,14 @@ function renameBoard(clickEvent){
 
 function deleteBoard(clickEvent) {
     console.log("deleting a board")
+    let boardId = clickEvent.target.getAttribute("data-board-id");
+    dataHandler.getBoard(boardId);
 }
 
-function addNewBoard(clickEvent) {
-    console.log("adding a new board")
+async function addNewBoard(clickEvent) {
+    console.log("adding a new board")   
+    document.querySelector("#overlay").style.visibbility = "visible";
+    document.querySelector("#NewBoard").style.visibility = "visible";
 }
 
 
@@ -167,4 +182,20 @@ function refreshBoard(clickEvent){
     //         addBoardEventListeners(data[0].id)
     //     }
     // })
+}
+
+async function getNewBoardName(){
+    document.querySelector(".overlay").style.visibility = "hidden";
+    document.querySelector("#NewBoard").style.visibility = "hidden";
+    console.log("new name added");
+    itemName=document.querySelector("#boardName").value;
+    let board=await dataHandler.createNewBoard(itemName);
+    const newBoard = makeNewBoard(board);
+    domManager.addChild("#root", newBoard, "first");
+    addBoardEventListeners(board.id);
+}
+
+function abortCreateBoard(){
+    document.querySelector(".overlay").style.display = "none";
+    document.querySelector("#choose_name").style.display = "none";
 }

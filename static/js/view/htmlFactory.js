@@ -94,3 +94,23 @@ function addButtonBuilder() {
                 <button id="board-add-button">Create new board</button>
             </div>`
 }
+
+
+function addModalBuilder(){
+    return `<div class="overlay" id="overlay" style="visibility:hidden">
+    <div class="dialog" id="NewBoard" style="visibility:hidden">
+        <form>
+            <label> Name me!
+                <input type="text" id="boardName" value="new board">
+            </label>
+            <button type="submit" id="submitName">Insert</button>
+            <button type="cancel" id="cancelDialog">Cancel</button>
+        </form>
+    </div>
+</div>`
+
+}
+
+
+
+

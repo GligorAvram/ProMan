@@ -76,7 +76,18 @@ def get_status(status_id):
         SELECT * FROM statuses
         WHERE id=%(id)s;
         """,
-        {"id": status_id}
+        {"id": status_id},
+        False
+    )
+
+
+def get_card(card_id):
+    return data_manager.execute_select(
+        """
+        SELECT * FROM cards
+        WHERE id=%(id)s;
+        """,
+        {"id": card_id}
     )
 
 
@@ -268,6 +279,19 @@ def reorder_card(card_id, status_id):
         {
             "card_id": card_id,
             "status_id": status_id
+        }
+    )
+
+    
+def add_board(title):
+    return data_manager.execute_select(
+        """
+        INSERT INTO boards (title) 
+        VALUES (%(title)s)
+        RETURNING 200;
+        """,
+        {
+            "title": title,
         },
         False
     )

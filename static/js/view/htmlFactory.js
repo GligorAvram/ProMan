@@ -3,6 +3,7 @@ export const htmlTemplates = {
     status: 2,
     card: 3,
     addButton: 4,
+    addModal: 5
 }
 
 export function htmlFactory(template) {
@@ -15,6 +16,8 @@ export function htmlFactory(template) {
             return cardBuilder
         case htmlTemplates.addButton:
             return addButtonBuilder
+        case htmlTemplates.addModal:
+            return addModalBuilder
         default:
             console.error("Undefined template: " + template)
             return () => { return "" }
@@ -51,7 +54,7 @@ function boardBuilder(board) {
 }
 
 function cardBuilder(card) {
-    return `<div class="card d-flex flex-row justify-content-around">
+    return `<div class="card d-flex flex-row justify-content-around" data-card-id="${card.id}" draggable="true" id="card${card['id']}" data-board-id="${card['board_id']}" data-status-id="${card['status_id']}">
                 <span class="clickable-card-title rename-normal" data-card-id="${card.id}" id="card${card.id}-normal">
                     <span id="card${card.id}-title" data-card-id="${card.id}">${card.title}</span>
                     <button class="card-delete" data-card-id="${card.id}"><i class="fas fa-chevron-down"></i></button>
@@ -82,7 +85,7 @@ function statusColumnBuilder(status, boardId){
                     </span>
                 </div>
 
-                <div class="board-column-content" id="board${boardId}-column${status.id}"></div>
+                <fieldset class="board-column-content" data-status-id="${status.id}" id="board${boardId}-column${status.id}" data-board-id="${boardId}"></fieldset>
             </div>`
 }
 
@@ -91,7 +94,3 @@ function addButtonBuilder() {
                 <button id="board-add-button">Create new board</button>
             </div>`
 }
-
-
-
-

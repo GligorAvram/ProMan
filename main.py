@@ -49,7 +49,7 @@ def get_boards():
     return queries.get_boards()
 
 
-@app.route("/status/add", methods=["POST"])
+@app.route("/api/status/add", methods=["POST"])
 @json_response
 def add_status():
     parameters = flask.request.json
@@ -63,16 +63,16 @@ def get_board(board_id):
     return queries.get_board(board_id), 200
 
 
-@app.route("/board/rename", methods=["POST"])
+@app.route("/api/board/rename", methods=["POST"])
 @json_response
 def rename_board():
     parameters = flask.request.json
     board_id = parameters["id"]
     new_name = parameters["name"]
-    return queries.rename_board(board_id, new_name)
+    return queries.rename_board(board_id, new_name), 200
 
 
-@app.route("/card/rename", methods=["POST"])
+@app.route("/api/card/rename", methods=["POST"])
 @json_response
 def rename_card():
     parameters = flask.request.json
@@ -81,7 +81,7 @@ def rename_card():
     return queries.rename_card(card_id, new_name)
 
 
-@app.route("/status/rename", methods=["POST"])
+@app.route("/api/status/rename", methods=["POST"])
 @json_response
 def rename_status():
     parameters = flask.request.json
@@ -96,10 +96,10 @@ def rename_status():
     if queries.check_if_status_changable(board_id, new_id) == 0:
         return queries.changeCardTitles(board_id, status_id, new_id)
     else:
-        return 200, ""
+        return 200
 
 
-@app.route("/card/add", methods=["POST"])
+@app.route("/api/card/add", methods=["POST"])
 @json_response
 def add_card():
     parameters = flask.request.json
@@ -113,7 +113,7 @@ def add_card():
 @app.route("/api/boards/delete/<board_id>", methods=["DELETE"])
 @json_response
 def delete_board(board_id):
-    return queries.delete_board(board_id), ""
+    return queries.delete_board(board_id)
 
 
 @app.route("/api/<board_id>/statuses")
@@ -137,7 +137,7 @@ def get_cards_for_board(board_id: int):
 @app.route("/api/cards/delete/<card_id>", methods=["DELETE"])
 @json_response
 def delete_card(card_id: int):
-    return queries.delete_card(card_id), ""
+    return queries.delete_card(card_id)
 
 
 @app.route("/api/section/delete", methods=["DELETE"])
@@ -145,7 +145,18 @@ def delete_card(card_id: int):
 def delete_section():
     boardId = request.args.get("boardId")
     statusId = request.args.get("statusId")
-    return queries.deleteSectionCards(boardId, statusId), ""
+    return queries.deleteSectionCards(boardId, statusId)
+
+
+@app.route("/api/card/reorder", methods=["POST"])
+@json_response
+def reorder_card():
+    parameters = flask.request.json
+    card_id = parameters["cardId"]
+    status_id = parameters["statusId"]
+    print(card_id +" " + status_id)
+    new_card = queries.reorder_card(card_id, status_id)
+    return new_card
 
 # okta
 @login_manager.user_loader

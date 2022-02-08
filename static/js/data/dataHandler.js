@@ -29,8 +29,7 @@ export let dataHandler = {
                        board_id: boardId,
                        status_id: statusId
                        }
-        let response = await apiPost(`/card/add`, payload);
-        console.log(response)
+        let response = await apiPost(`api/card/add`, payload);
         return response;
   },
   deleteBoard: async function (boardId) {
@@ -47,14 +46,14 @@ export let dataHandler = {
                        id: boardId,
                        name: newName
                        }
-        apiPost(`/board/rename`, payload);
+        apiPost(`api/board/rename`, payload);
   },
   renameCard: async function (cardId, newName) {
         let payload = {
                        id: cardId,
                        name: newName
                        }
-        apiPost(`/card/rename`, payload);
+        apiPost(`api/card/rename`, payload);
   },
   renameColumn: async function (boardId, statusId, newName) {
         let payload = {
@@ -62,13 +61,21 @@ export let dataHandler = {
                        status_id: statusId,
                        name: newName
                        }
-        apiPost(`/status/rename`, payload);
+        apiPost(`api/status/rename`, payload);
   },
   addStatus: async function (title) {
     let payload = {
                    title: title
                    }
-        apiPost(`/status/add`, payload);
+        apiPost(`api/status/add`, payload);
+  },
+  reorderCard: async function (cardId, statusId) {
+  console.log(cardId + " " + statusId)
+    let payload = {
+                   cardId: cardId,
+                   statusId, statusId
+                   }
+        apiPost(`api/card/reorder`, payload);
   },
 };
 

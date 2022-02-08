@@ -15,6 +15,19 @@ export let statusesManager = {
         renameCommit
       );
 
+
+      domManager.addEventListener(
+      `#board${boardId}-column${status.id}`,
+      "drop",
+      dropHandler
+      )
+
+      domManager.addEventListener(
+      `#board${boardId}-column${status.id}`,
+      "dragover",
+      dragOverHandler
+      )
+
       domManager.addEventListener(
         `#rename-status${status.id}-hidden-board${boardId} .column-rename-cancel`,
         "click",
@@ -67,4 +80,22 @@ function renameCommit(clickEvent){
 
     dataHandler.renameColumn(boardId, statusId, newName);
     renameCancel(clickEvent)
+}
+
+function dropHandler(drop) {
+    let cardId = drop.dataTransfer.getData("cardId");
+    let originalStatus = drop.dataTransfer.getData("statusId");
+    let originalBoard = drop.dataTransfer.getData("boardId");
+
+    let boardId = drop.target.closest("fieldset").getAttribute("data-board-id");
+    let statusId = drop.target.closest("fieldset").getAttribute("data-status-id");
+
+    if (originalBoard === boardId) {
+        dataHandler.reorderCard(cardId, statusId);
+    }
+}
+
+function dragOverHandler(event) {
+    event.preventDefault();
+    console.log("dragging over")
 }

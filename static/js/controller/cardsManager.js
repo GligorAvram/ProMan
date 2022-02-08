@@ -19,6 +19,12 @@ export let cardsManager = {
       );
 
       domManager.addEventListener(
+      `#card${card.id}`,
+        "dragstart",
+        dragStart
+      );
+
+      domManager.addEventListener(
       `.rename-card-title[data-card-id="${card.id}"]`,
         "click",
         commitCardRename
@@ -66,3 +72,13 @@ function commitCardRename(clickEvent) {
     document.getElementById(`card${cardId}-title`).innerText = newName;
     cancelCardRename(clickEvent);
 }
+
+function dragStart(dragstart){
+    dragstart.dataTransfer.setData("cardId", dragstart.target.getAttribute("data-card-id"))
+    dragstart.dataTransfer.setData("boardId", dragstart.target.getAttribute("data-board-id"))
+    dragstart.dataTransfer.setData("statusId", dragstart.target.getAttribute("data-status-id"))
+    dragstart.target.classList.add("dragging");
+}
+
+
+

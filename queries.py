@@ -256,3 +256,18 @@ def add_status(title):
         },
         False
     )
+
+
+def reorder_card(card_id, status_id):
+    return data_manager.execute_select(
+        f"""
+        UPDATE cards SET status_id=%(status_id)s
+        WHERE id=%(card_id)s
+        RETURNING 200;
+        """,
+        {
+            "card_id": card_id,
+            "status_id": status_id
+        },
+        False
+    )

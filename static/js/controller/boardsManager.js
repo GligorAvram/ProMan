@@ -79,7 +79,7 @@ function addBoardEventListeners(boardId) {
 function makeNewBoard(board) {
         const boardBuilder = htmlFactory(htmlTemplates.board);
         const content = boardBuilder(board);
-
+        console.log(content)
         dataHandler.getStatuses(board['id'])
         .then(statuses => {
             statusesManager.loadStatuses(statuses, board['id']);
@@ -101,9 +101,10 @@ function renameBoard(clickEvent){
 }
 
 function deleteBoard(clickEvent) {
-    console.log("deleting a board")
+    const board = clickEvent.target.closest("section");
     let boardId = clickEvent.target.getAttribute("data-board-id");
-    dataHandler.getBoard(boardId);
+    dataHandler.deleteBoard(boardId);
+    document.getElementById("root").removeChild(board);
 }
 
 async function addNewBoard(clickEvent) {

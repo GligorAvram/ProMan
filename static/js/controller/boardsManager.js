@@ -3,7 +3,6 @@ import { htmlFactory, htmlTemplates } from "../view/htmlFactory.js";
 import { domManager } from "../view/domManager.js";
 import { cardsManager } from "./cardsManager.js";
 import { statusesManager } from "./statusesManager.js";
-var itemName='';
 
 export let boardsManager = {
   loadBoards: async function () {
@@ -12,16 +11,20 @@ export let boardsManager = {
     domManager.addChild("#root", addButton, "beforebegin");
 
     domManager.addEventListener(
-            `#board-add-button`,
-            "click",
-        addNewBoard
-      );
+        `#board-add-button`,
+        "click",
+    addNewBoard
+  );
 
-    for (let board of await dataHandler.getBoards()) {
+    domManager.addEventListener(
+        `#toggle-archive-button`,
+        "click",
+        toggleArchive
+  );
+
+for (let board of await dataHandler.getBoards()) {
         const newBoard = makeNewBoard(board);
-
         domManager.addChild("#root", newBoard, "last");
-
         addBoardEventListeners(board.id);
         }
     
@@ -31,7 +34,7 @@ export let boardsManager = {
     domManager.addEventListener(
         '#submitName',
         "click",
-        getNewBoardName)
+        getNewBoardName);
     domManager.addEventListener(
         '#cancelDialog',
         "click",
@@ -79,7 +82,7 @@ function addBoardEventListeners(boardId) {
 function makeNewBoard(board) {
         const boardBuilder = htmlFactory(htmlTemplates.board);
         const content = boardBuilder(board);
-        console.log(content)
+        console.log(content);
         dataHandler.getStatuses(board['id'])
         .then(statuses => {
             statusesManager.loadStatuses(statuses, board['id']);
@@ -92,7 +95,7 @@ function makeNewBoard(board) {
 
 
 function renameBoard(clickEvent){
-    clickEvent.preventDefault()
+    clickEvent.preventDefault();
     let newName = clickEvent.target.previousElementSibling.value;
     let boardId = clickEvent.target.getAttribute("data-board-id");
     document.getElementById(`board${boardId}-title`).innerText = newName;
@@ -108,18 +111,19 @@ function deleteBoard(clickEvent) {
 }
 
 async function addNewBoard(clickEvent) {
-    console.log("adding a new board")   
     document.querySelector("#overlay").style.visibbility = "visible";
     document.querySelector("#NewBoard").style.visibility = "visible";
 }
 
 
 function addCard(clickEvent) {
-    console.log("adding a new card")
+    console.log("adding a new card");
+    let boardId = clickEvent.target.getAttribute("data-board-id");
+    dataHandler.createNewCard("edit me",boardId,1);
 }
 
 function commitNewBoard(clickEvent) {
-     console.log("save board " + clickEvent.target.getAttribute("data-board-id"))
+     console.log("save board " + clickEvent.target.getAttribute("data-board-id"));
 }
 
 function toggleRenameBoard(dblclick) {
@@ -136,12 +140,12 @@ function cancelRenameBoard(clickEvent) {
 }
 
 function addStatus(clickEvent) {
-    console.log("adding a status")
+    console.log("adding a status");
 }
 
 function commitNewStatus(clickEvent) {
     clickEvent.preventDefault();
-    dataHandler.addNewStatus()
+    dataHandler.addNewStatus();
 }
 
 function cancelNewStatus(clickEvent) {
@@ -151,7 +155,7 @@ function cancelNewStatus(clickEvent) {
 }
 
 function saveCard(clickEvent) {
-    console.log("saving a card")
+    console.log("saving a card");
 }
 
 function cancelCard(clickEvent) {
@@ -188,7 +192,6 @@ function refreshBoard(clickEvent){
 async function getNewBoardName(){
     document.querySelector(".overlay").style.visibility = "hidden";
     document.querySelector("#NewBoard").style.visibility = "hidden";
-    console.log("new name added");
     itemName=document.querySelector("#boardName").value;
     let board=await dataHandler.createNewBoard(itemName);
     const newBoard = makeNewBoard(board);
@@ -199,4 +202,14 @@ async function getNewBoardName(){
 function abortCreateBoard(){
     document.querySelector(".overlay").style.display = "none";
     document.querySelector("#choose_name").style.display = "none";
+}
+
+function toggleArchive(){
+    let archives=document.querySelectorAll(".archive");
+    let taBtn=document.querySelector("#toggle-archive-button")
+    taBtn.innerHTML=(taBtn.innerHTML=="Show archived cards")?"Hide archived cards":"Show archived cards"
+    for(let archive of archives) {
+        archive.classList.toggle("show");
+        archive.classList.toggle("hide");
+    }
 }

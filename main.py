@@ -134,8 +134,8 @@ def delete_board(board_id):
 def get_statuses(board_id):
     board_statuses=queries.get_statuses_for_board(board_id)
     found=False
-    for i in range(4):
-        status=queries.get_status(i+1)
+    for i in range(5):
+        status=queries.get_status(i)
         for j in range(len(board_statuses)):
             found=False
             if status['title']==board_statuses[j]['title']:

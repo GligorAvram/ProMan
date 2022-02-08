@@ -1,5 +1,5 @@
 window.addEventListener('load', ()=> {
-    registerServiceWorker();
+    // registerServiceWorker();
 })
 
 

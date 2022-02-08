@@ -40,8 +40,9 @@ export let cardsManager = {
 };
 
 function deleteButtonHandler(clickEvent) {
-    console.log("delete button handled")}
-
+    let cardId = clickEvent.target.getAttribute("data-card-id");
+    dataHandler.deleteCard(cardId);
+}
 
 function toggleRenameCard(dblclick) {
     let cardId = dblclick.target.getAttribute("data-card-id");

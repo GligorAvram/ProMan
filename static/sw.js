@@ -1,5 +1,5 @@
 self.addEventListener('fetch', async e => {
-    console.log("fetch")
+    // console.log("fetch")
 });
 
 

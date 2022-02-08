@@ -76,7 +76,18 @@ def get_status(status_id):
         SELECT * FROM statuses
         WHERE id=%(id)s;
         """,
-        {"id": status_id}
+        {"id": status_id},
+        False
+    )
+
+
+def get_card(card_id):
+    return data_manager.execute_select(
+        """
+        SELECT * FROM cards
+        WHERE id=%(id)s;
+        """,
+        {"id": card_id}
     )
 
 
@@ -248,6 +259,20 @@ def add_status(title):
     return data_manager.execute_select(
         """
         INSERT INTO statuses (title) 
+        VALUES (%(title)s)
+        RETURNING 200;
+        """,
+        {
+            "title": title,
+        },
+        False
+    )
+
+
+def add_board(title):
+    return data_manager.execute_select(
+        """
+        INSERT INTO boards (title) 
         VALUES (%(title)s)
         RETURNING 200;
         """,

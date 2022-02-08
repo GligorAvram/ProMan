@@ -3,6 +3,7 @@ export const htmlTemplates = {
     status: 2,
     card: 3,
     addButton: 4,
+    addModal: 5,
 }
 
 export function htmlFactory(template) {
@@ -15,6 +16,8 @@ export function htmlFactory(template) {
             return cardBuilder
         case htmlTemplates.addButton:
             return addButtonBuilder
+        case htmlTemplates.addModal:
+            return addModalBuilder
         default:
             console.error("Undefined template: " + template)
             return () => { return "" }
@@ -90,6 +93,21 @@ function addButtonBuilder() {
     return `<div>
                 <button id="board-add-button">Create new board</button>
             </div>`
+}
+
+function addModalBuilder(){
+    return `<div class="overlay" id="overlay" style="visibility:hidden">
+    <div class="dialog" id="NewBoard" style="visibility:hidden">
+        <form>
+            <label> Name me!
+                <input type="text" id="boardName" value="new board">
+            </label>
+            <button type="submit" id="submitName">Insert</button>
+            <button type="cancel" id="cancelDialog">Cancel</button>
+        </form>
+    </div>
+</div>`
+
 }
 
 

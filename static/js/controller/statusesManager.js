@@ -38,7 +38,9 @@ export let statusesManager = {
 
 
 function deleteButtonHandler(clickEvent) {
-    console.log("delete button handled");
+    let statusId = clickEvent.target.getAttribute("data-status-id");
+    let boardId = clickEvent.target.getAttribute("data-board-id");
+    dataHandler.deleteStatusCards(boardId,statusId);
 }
 
 function toggleRenameStatus(dblclick) {

@@ -73,7 +73,7 @@ def get_statuses_for_board(board_id):
 def get_status(status_id):
     return data_manager.execute_select(
         """
-        SELECT * FROM statuses
+        SELECT title, id FROM statuses
         WHERE id=%(id)s;
         """,
         {"id": status_id},

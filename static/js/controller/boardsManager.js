@@ -103,7 +103,7 @@ function renameBoard(clickEvent){
 function deleteBoard(clickEvent) {
     console.log("deleting a board")
     let boardId = clickEvent.target.getAttribute("data-board-id");
-    dataHandler.getBoard(boardId);
+    dataHandler.deleteBoard(boardId);
 }
 
 async function addNewBoard(clickEvent) {

@@ -132,15 +132,17 @@ def delete_board(board_id):
 @app.route("/api/<board_id>/statuses")
 @json_response
 def get_statuses(board_id):
-    #board_statuses=queries.get_statuses_for_board(board_id)
-    # for i in range(4):
-    #     status=queries.get_status(i+1)
-    #     for j in range(len(board_statuses)):
-    #         found=False
-    #         if status.keys[1]==board_statuses[j].keys[0]: found=True
-    #         if not found: board_statuses.append(status)
-    #return board_statuses
-    return queries.get_statuses_for_board(board_id)
+    board_statuses=queries.get_statuses_for_board(board_id)
+    found=False
+    for i in range(4):
+        status=queries.get_status(i+1)
+        for j in range(len(board_statuses)):
+            found=False
+            if status['title']==board_statuses[j]['title']:
+                found=True
+                break
+        if not found: board_statuses.append(status)
+    return board_statuses
 
 
 @app.route("/api/statuses/<status_id>")

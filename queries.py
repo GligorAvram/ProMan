@@ -2,59 +2,31 @@ import data_manager
 
 
 def get_card_status(status_id):
-    """
-    Find the first status matching the given id
-    :param status_id:
-    :return: str
-    """
-    status = data_manager.execute_select(
-        """
-        SELECT * FROM statuses s
-        WHERE s.id = %(status_id)s
-        ;
-        """
-        , {"status_id": status_id}
+    return data_manager.execute_select(
+        "SELECT * FROM statuses WHERE id = %(status_id)s;",
+        {"status_id": status_id},
     )
-
-    return status
 
 
 def get_boards():
-    return data_manager.execute_select(
-        """
-        SELECT * FROM boards
-        ;
-        """
-    )
+    return data_manager.execute_select("SELECT * FROM boards;")
 
 
 def get_cards_for_board(board_id):
-    matching_cards = data_manager.execute_select(
-        """
-        SELECT * FROM cards
-        WHERE cards.board_id = %(board_id)s
-        ;
-        """
-        , {"board_id": board_id})
-
-    return matching_cards
+    return data_manager.execute_select(
+        "SELECT * FROM cards WHERE board_id = %(board_id)s;",
+        {"board_id": board_id},
+    )
 
 
 def get_cards():
-    return data_manager.execute_select(
-        """
-        SELECT * FROM cards;
-        """
-    )
+    return data_manager.execute_select("SELECT * FROM cards;")
 
 
 def get_board(board_id):
     return data_manager.execute_select(
-        """
-        SELECT * FROM boards
-        WHERE id=%(id)s;
-        """,
-        {"id": board_id}
+        "SELECT * FROM boards WHERE id = %(id)s;",
+        {"id": board_id},
     )
 
 
@@ -63,146 +35,119 @@ def get_statuses_for_board(board_id):
         """
         SELECT DISTINCT statuses.title, statuses.id FROM cards
             JOIN statuses ON statuses.id = cards.status_id
-            WHERE board_id=%(id)s
+            WHERE board_id = %(id)s
             ORDER BY id;
         """,
-        {"id": board_id}
+        {"id": board_id},
     )
+
 
 def get_required_statuses(board_id):
     return data_manager.execute_select(
         """
         SELECT statuses.title, statuses.id FROM boardstatuses
             JOIN statuses ON statuses.id = boardstatuses.status_id
-            WHERE board_id=%(id)s
+            WHERE board_id = %(id)s
             ORDER BY id;
         """,
-        {"id": board_id}
+        {"id": board_id},
     )
+
 
 def get_status(status_id):
     return data_manager.execute_select(
-        """
-        SELECT title, id FROM statuses
-        WHERE id=%(id)s;
-        """,
+        "SELECT title, id FROM statuses WHERE id = %(id)s;",
         {"id": status_id},
-        False
+        False,
     )
 
 
 def get_card(card_id):
     return data_manager.execute_select(
-        """
-        SELECT * FROM cards
-        WHERE id=%(id)s;
-        """,
-        {"id": card_id}
+        "SELECT * FROM cards WHERE id = %(id)s;",
+        {"id": card_id},
     )
 
 
 def delete_board(board_id):
     return data_manager.execute_select(
         """
-        DELETE FROM cards
-        WHERE board_id=%(id)s;
-        
-        DELETE FROM boards
-        WHERE id=%(id)s
-        RETURNING 200;
+        DELETE FROM cards WHERE board_id = %(id)s;
+        DELETE FROM boards WHERE id = %(id)s RETURNING 200;
         """,
         {"id": board_id},
-        False
+        False,
     )
 
 
 def delete_card(card_id):
     return data_manager.execute_select(
-        """
-        DELETE FROM cards
-        WHERE id=%(id)s
-        RETURNING 200;
-        """,
+        "DELETE FROM cards WHERE id = %(id)s RETURNING 200;",
         {"id": card_id},
-        False
+        False,
     )
 
 
 def deleteSectionCards(boardId, status):
     return data_manager.execute_select(
-    """
-            DELETE FROM cards
-            WHERE board_id=%(board_id)s
-            AND status_id=%(status_id)s
-            RETURNING 200;
-            """,
-    {"status_id": status,
-     "board_id": boardId},
-    False
+        "DELETE FROM cards WHERE board_id = %(board_id)s AND status_id = %(status_id)s RETURNING 200;",
+        {
+            "status_id": status,
+            "board_id": boardId,
+        },
+        False,
     )
 
 
 def rename_board(board_id, new_name):
     return data_manager.execute_select(
-        """
-            UPDATE boards
-            SET title = %(new_name)s
-            WHERE id = %(board_id)s
-            RETURNING 200;
-        """,
-        {"board_id": board_id,
-         "new_name": new_name},
-        False
+        "UPDATE boards SET title = %(new_name)s WHERE id = %(board_id)s RETURNING 200;",
+        {
+            "board_id": board_id,
+            "new_name": new_name,
+        },
+        False,
     )
 
 
 def rename_card(card_id, new_name):
     return data_manager.execute_select(
-        """
-            UPDATE cards
-            SET title = %(new_name)s
-            WHERE id = %(card_id)s
-            RETURNING 200;
-        """,
-        {"card_id": card_id,
-         "new_name": new_name},
-        False
+        "UPDATE cards SET title = %(new_name)s WHERE id = %(card_id)s RETURNING 200;",
+        {
+            "card_id": card_id,
+            "new_name": new_name,
+        },
+        False,
     )
 
 
 def check_if_status_exists(new_name):
     return data_manager.execute_select(
-        """
-        SELECT COUNT(*) FROM statuses WHERE title = %(new_name)s;
-        """,
+        "SELECT COUNT(*) FROM statuses WHERE title = %(new_name)s;",
         {"new_name": new_name},
-        False
-    )['count']
+        False,
+    )["count"]
 
 
 def insert_new_status(new_name):
     return data_manager.execute_select(
-        """
-        INSERT INTO statuses(title) VALUES(%(new_name)s)
-        RETURNING ID;
-        """,
+        "INSERT INTO statuses (title) VALUES (%(new_name)s) RETURNING ID;",
         {"new_name": new_name},
-        False
-    )['id']
+        False,
+    )["id"]
 
 
 def get_board_id(new_name):
     return data_manager.execute_select(
-        """
-        SELECT id FROM boards WHERE title=%(new_name)s;
-        """,
+        "SELECT id FROM boards WHERE title = %(new_name)s;",
         {"new_name": new_name},
-        False
-    )['id']
+        False,
+    )["id"]
+
 
 def rename_status(board_id, status_id, new_name):
-        # return data_manager.execute_select(
-        #     """
+    # return data_manager.execute_select(
+    #     """
     #         UPDATE cards
     #         SET title = %(new_name)s
     #         WHERE id = %(card_id)s
@@ -217,15 +162,10 @@ def rename_status(board_id, status_id, new_name):
 
 def check_if_status_changable(board_id, status_id):
     return data_manager.execute_select(
-        """
-        SELECT COUNT(*) FROM cards WHERE board_id=%(board_id)s AND status_id=%(status_id)s;
-        """,
-        {
-            "status_id": status_id,
-            "board_id": board_id
-         },
-        False
-    )['count']
+        "SELECT COUNT(*) FROM cards WHERE board_id = %(board_id)s AND status_id = %(status_id)s;",
+        {"status_id": status_id, "board_id": board_id},
+        False,
+    )["count"]
 
 
 def changeCardTitles(board_id, status_id, new_id):
@@ -241,22 +181,18 @@ def changeCardTitles(board_id, status_id, new_id):
         {
             "board_id": board_id,
             "status_id": status_id,
-            "new_id": new_id
+            "new_id": new_id,
         },
-        False
+        False,
     )
 
 
 def get_status_id(new_name):
     return data_manager.execute_select(
-        """
-        SELECT id FROM statuses WHERE title=%(new_name)s;
-        """,
-        {
-            "new_name": new_name
-        },
-        False
-    )['id']
+        "SELECT id FROM statuses WHERE title = %(new_name)s;",
+        {"new_name": new_name},
+        False,
+    )["id"]
 
 
 def add_card(title, board_id, status_id):
@@ -271,112 +207,75 @@ def add_card(title, board_id, status_id):
             "board_id": board_id,
             "status_id": status_id,
         },
-        False
+        False,
     )
 
 
 def add_status(title):
     return data_manager.execute_select(
-        """
-        INSERT INTO statuses (title) 
-        VALUES (%(title)s)
-        RETURNING 200;
-        """,
-        {
-            "title": title,
-        },
-        False
+        "INSERT INTO statuses (title)  VALUES (%(title)s) RETURNING 200;",
+        {"title": title},
+        False,
     )
 
+
 def insert_default_statuses(id):
-    print("inserting defauls statuses for id "+id)
-    for i in range(5):
-        print("status"+i+":\n")
-        data_manager.execute_select(
-            """
-            INSERT INTO boardstatuses 
-            VALUES (%(board_id)s, %(i)s)
-            RETURNING 200;
-            """,
-            {
-                "board_id": id,
-                "i": i,
-            },
-            False
-        )
+    print("inserting defauls statuses for id " + id)
+    queries = "\n".join(
+        [
+            f"INSERT INTO boardstatuses VALUES (%(board_id)s, {i}) RETURNING 200;"
+            for i in range(5)
+        ]
+    )
+    data_manager.execute_select(queries, {"board_id": id})
     return 200
+
 
 def unlink_statuses_from_board(id):
     return data_manager.execute_select(
-        """
-        DELETE FROM boardstatuses 
-        WHERE board_id=%(board_id)s
-        RETURNING 200;
-        """,
-        {
-            "board_id": id,
-        },
-        False
+        "DELETE FROM boardstatuses WHERE board_id = %(board_id)s RETURNING 200;",
+        {"board_id": id},
+        False,
     )
 
 
 def reorder_card(card_id, status_id):
     return data_manager.execute_select(
-        f"""
-        UPDATE cards SET status_id=%(status_id)s
-        WHERE id=%(card_id)s
-        RETURNING 200;
-        """,
+        "UPDATE cards SET status_id = %(status_id)s WHERE id = %(card_id)s RETURNING 200;",
         {
             "card_id": card_id,
-            "status_id": status_id
-        }
+            "status_id": status_id,
+        },
     )
 
-    
+
 def add_board(title):
-    print("inserting board"+title)
-    id=data_manager.execute_select(
-        """
-        INSERT INTO boards (title) 
-        VALUES (%(title)s)
-        RETURNING id;
-        """,
-        {
-            "title": title,
-        },
-        False
+    print("inserting board" + title)
+    id = data_manager.execute_select(
+        "INSERT INTO boards (title) VALUES (%(title)s) RETURNING id;",
+        {"title": title},
+        False,
     )
-    print("assigned id:"+id)
+    print("assigned id:" + id)
     return id
 
-def link_status_to_board(board_id,status_id):
+
+def link_status_to_board(board_id, status_id):
     return data_manager.execute_select(
-        """
-        INSERT INTO boardstatuses 
-        VALUES (%(board)s,%(status)s)
-        RETURNING 200;
-        """,
+        "INSERT INTO boardstatuses VALUES (%(board)s, %(status)s) RETURNING 200;",
         {
             "board": board_id,
             "status": status_id,
         },
-        False
+        False,
     )
 
 
 def get_cards_for_status_on_board(board_id, status_id):
-    cards = data_manager.execute_select(
-        """
-        SELECT * FROM cards
-        WHERE board_id = %(board_id)s
-        AND status_id = %(status_id)s
-        ;
-        """
-        , {
+    return data_manager.execute_select(
+        "SELECT * FROM cards WHERE board_id = %(board_id)s AND status_id = %(status_id)s;",
+        {
             "board_id": board_id,
-            "status_id": status_id
-        }
+            "status_id": status_id,
+        },
     )
-
-    return cards

@@ -71,7 +71,7 @@ function cardBuilder(card) {
 
 function statusColumnBuilder(status, boardId, isArchive=false){
     let s=(isArchive)?"archive hide":"";
-    return `<div class="board-column ${s}" data-status-id="${status.id}">
+    return `<div class="board-column ${s}" data-status-id="${status.id}" id="column${status.id}-board${boardId}">
                 <div class="board-column-title" data-status-id="${status.id}">
                     <span class="rename-normal" data-status-id="${status.id}" id="rename-status${status.id}-normal-board${boardId}" data-board-id="${boardId}">
                         <span>${status.title}</span>

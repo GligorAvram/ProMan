@@ -295,3 +295,20 @@ def add_board(title):
         },
         False
     )
+
+
+def get_cards_for_status_on_board(board_id, status_id):
+    cards = data_manager.execute_select(
+        """
+        SELECT * FROM cards
+        WHERE board_id = %(board_id)s
+        AND status_id = %(status_id)s
+        ;
+        """
+        , {
+            "board_id": board_id,
+            "status_id": status_id
+        }
+    )
+
+    return cards

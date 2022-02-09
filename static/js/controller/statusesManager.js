@@ -1,16 +1,18 @@
 import { dataHandler } from "../data/dataHandler.js";
 import { htmlFactory, htmlTemplates } from "../view/htmlFactory.js";
 import { domManager } from "../view/domManager.js";
+import { cardsManager } from "./cardsManager.js";
 
 export let statusesManager = {
   loadStatuses: function (statuses, boardId) {
     let archive=null;
     for (let status of statuses) {
       if (status['title']!='archive') loadStatus(status,boardId);
-      else archive=status;
+      else {
+        archive=status;
+        loadStatus(archive,boardId,true);
+      }
     }
-      
-    loadStatus(archive,boardId,true);
   },
 };
 
@@ -57,9 +59,9 @@ function dropHandler(drop) {
     let boardId = drop.target.closest("fieldset").getAttribute("data-board-id");
     let statusId = drop.target.closest("fieldset").getAttribute("data-status-id");
 
-//    if (originalBoard === boardId) {
-//        dataHandler.reorderCard(cardId, statusId);
-//    }
+    if (originalBoard === boardId) {
+        dataHandler.reorderCard(cardId, statusId);
+    }
 
     refreshStatus(originalBoard, originalStatus);
     refreshStatus(boardId, statusId);
@@ -73,26 +75,29 @@ function refreshStatus(boardId, statusId) {
     const elementToRefresh = document.getElementById(`column${statusId}-board${boardId}`);
     let index = Array.from(elementToRefresh.parentElement.children).indexOf(elementToRefresh);
 
-    elementToRefresh.parentElement.removeChild(elementToRefresh);
-
     dataHandler.getStatus(statusId)
     .then(data => {
         const statusBuilder = htmlFactory(htmlTemplates.status);
         const content = statusBuilder(data, boardId);
 
-        dataHandler.getCardsForColumnOnBoard(boardId, statusId)
-            .then(cards => {
-                cardsManager.loadCards(cards, board.id);
+        if(index === 0){
+        elementToRefresh.parentElement.removeChild(elementToRefresh);
+            domManager.addChild(`#board-columns-table${boardId}`, content, "first");
+        }
+        else{
+            const previousSibling = elementToRefresh.previousElementSibling.id;
+            elementToRefresh.parentElement.removeChild(elementToRefresh);
+            domManager.addChild(`#${previousSibling}`, content, "after");
+        }
 
-                    if(index === 0){
-                        domManager.addChild(`#board-columns-table${boardId}`, content, "first");
-                    }
-                    else{
-                        domManager.addChild(`#board-columns-table${boardId}`, content, "first");
-                    }
-                })
+
+        dataHandler.getCardsForColumnOnBoard(boardId, statusId)
+        .then(cards => {
+            cardsManager.loadCards(cards, boardId);
+
+            addEventListeners(boardId, statusId);
+        })
     });
-    console.log("dragging over")
 }
 
 function loadStatus(status,boardId, isArchive=false){
@@ -100,39 +105,43 @@ function loadStatus(status,boardId, isArchive=false){
   const content = statusBuilder(status, boardId, isArchive);
   domManager.addChild(`.board[data-board-id="${boardId}"] .board-columns`, content, "last");
 
-  domManager.addEventListener(
-    `#rename-status${status.id}-hidden-board${boardId} .column-rename`,
+ addEventListeners(boardId, status.id);
+}
+
+function addEventListeners(boardId, statusId) {
+ domManager.addEventListener(
+    `#rename-status${statusId}-hidden-board${boardId} .column-rename`,
     "click",
     renameCommit
   );
 
 
   domManager.addEventListener(
-  `#board${boardId}-column${status.id}`,
+  `#board${boardId}-column${statusId}`,
   "drop",
   dropHandler
   )
 
   domManager.addEventListener(
-  `#board${boardId}-column${status.id}`,
+  `#board${boardId}-column${statusId}`,
   "dragover",
   dragOverHandler
   )
 
   domManager.addEventListener(
-    `#rename-status${status.id}-hidden-board${boardId} .column-rename-cancel`,
+    `#rename-status${statusId}-hidden-board${boardId} .column-rename-cancel`,
     "click",
     renameCancel
   );
 
   domManager.addEventListener(
-    `.column-delete[data-status-id="${status.id}"]`,
+    `.column-delete[data-status-id="${statusId}"]`,
     "click",
     deleteButtonHandler
   );
 
   domManager.addEventListener(
-    `#rename-status${status.id}-normal-board${boardId}`,
+    `#rename-status${statusId}-normal-board${boardId}`,
     "dblclick",
     toggleRenameStatus
   );

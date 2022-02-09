@@ -151,6 +151,11 @@ def get_statuses(board_id):
     return board_statuses
 
 
+@app.route("/api/board/<board_id>/<status_id>")
+@json_response
+def get_cards_for_status_on_board(board_id, status_id):
+    return queries.get_cards_for_status_on_board(board_id, status_id)
+
 # @app.route("/api/statuses/<status_id>")
 # @json_response
 # def get_status(status_id):

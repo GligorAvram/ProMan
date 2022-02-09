@@ -30,7 +30,7 @@ for (let board of await dataHandler.getBoards()) {
     
     const addModalBuiler=htmlFactory(htmlTemplates.addModal);
     const addModalDialog=addModalBuiler();
-    domManager.addChild("#root",addModalDialog,"beforebegin");
+    domManager.addChild("#root",addModalDialog,"first");
     domManager.addEventListener(
         '#submitName',
         "click",
@@ -110,13 +110,11 @@ function deleteBoard(clickEvent) {
 }
 
 async function addNewBoard(clickEvent) {
-    document.querySelector("#overlay").style.visibbility = "visible";
-    document.querySelector("#NewBoard").style.visibility = "visible";
+    document.getElementById("overlay").classList.toggle("hide");
 }
 
 
 function addCard(clickEvent) {
-    console.log("adding a new card")
     refreshBoard(clickEvent)
     let boardId = clickEvent.target.getAttribute("data-board-id");
     dataHandler.createNewCard("edit me",boardId,1);

@@ -17,9 +17,6 @@
     display: none;
 }
 
-.show{
-    visibility: visible;
-}
 .hide{
-    visibility: hidden;
+    display: none;
 }

@@ -188,7 +188,6 @@ def reorder_card():
     parameters = flask.request.json
     card_id = parameters["cardId"]
     status_id = parameters["statusId"]
-    print(card_id +" " + status_id)
     new_card = queries.reorder_card(card_id, status_id)
     return new_card
 

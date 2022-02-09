@@ -85,6 +85,8 @@ function makeNewBoard(board) {
         console.log(content);
         dataHandler.getStatuses(board['id'])
         .then(statuses => {
+            console.log(board['id'])
+            console.log(statuses)
             statusesManager.loadStatuses(statuses, board.id);
 
             dataHandler.getCardsByBoardId(board.id)
@@ -196,7 +198,7 @@ function refreshBoard(clickEvent){
 async function getNewBoardName(){
     document.querySelector(".overlay").style.visibility = "hidden";
     document.querySelector("#NewBoard").style.visibility = "hidden";
-    itemName=document.querySelector("#boardName").value;
+    let itemName=document.getElementById("boardName").value;
     let board=await dataHandler.createNewBoard(itemName);
     const newBoard = makeNewBoard(board);
     domManager.addChild("#root", newBoard, "first");

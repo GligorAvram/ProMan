@@ -69,6 +69,16 @@ def get_statuses_for_board(board_id):
         {"id": board_id}
     )
 
+def get_required_statuses(board_id):
+    return data_manager.execute_select(
+        """
+        SELECT statuses.title, statuses.id FROM boardstatuses
+            JOIN statuses ON statuses.id = boardstatuses.status_id
+            WHERE board_id=%(id)s
+            ORDER BY id;
+        """,
+        {"id": board_id}
+    )
 
 def get_status(status_id):
     return data_manager.execute_select(
@@ -180,6 +190,16 @@ def insert_new_status(new_name):
         False
     )['id']
 
+
+def get_board_id(new_name):
+    return data_manager.execute_select(
+        """
+        SELECT id FROM boards WHERE title=%(new_name)s;
+        """,
+        {"new_name": new_name},
+        False
+    )['id']
+
 def rename_status(board_id, status_id, new_name):
         # return data_manager.execute_select(
         #     """
@@ -268,6 +288,37 @@ def add_status(title):
         False
     )
 
+def insert_default_statuses(id):
+    print("inserting defauls statuses for id "+id)
+    for i in range(5):
+        print("status"+i+":\n")
+        data_manager.execute_select(
+            """
+            INSERT INTO boardstatuses 
+            VALUES (%(board_id)s, %(i)s)
+            RETURNING 200;
+            """,
+            {
+                "board_id": id,
+                "i": i,
+            },
+            False
+        )
+    return 200
+
+def unlink_statuses_from_board(id):
+    return data_manager.execute_select(
+        """
+        DELETE FROM boardstatuses 
+        WHERE board_id=%(board_id)s
+        RETURNING 200;
+        """,
+        {
+            "board_id": id,
+        },
+        False
+    )
+
 
 def reorder_card(card_id, status_id):
     return data_manager.execute_select(
@@ -284,14 +335,31 @@ def reorder_card(card_id, status_id):
 
     
 def add_board(title):
-    return data_manager.execute_select(
+    print("inserting board"+title)
+    id=data_manager.execute_select(
         """
         INSERT INTO boards (title) 
         VALUES (%(title)s)
-        RETURNING 200;
+        RETURNING id;
         """,
         {
             "title": title,
+        },
+        False
+    )
+    print("assigned id:"+id)
+    return id
+
+def link_status_to_board(board_id,status_id):
+    return data_manager.execute_select(
+        """
+        INSERT INTO boardstatuses 
+        VALUES (%(board)s,%(status)s)
+        RETURNING 200;
+        """,
+        {
+            "board": board_id,
+            "status": status_id,
         },
         False
     )

@@ -59,8 +59,9 @@ def get_status(status_id):
 @json_response
 def add_status():
     parameters = flask.request.json
-    title = parameters["title"].lower()
-    return queries.add_status(title)
+    board_id = parameters["board_id"].lower()
+    new_id=queries.insert_new_status(board_id)
+    return queries.link_status_to_board(board_id,new_id)
 
 
 @app.route("/api/boards/<board_id>")
@@ -125,13 +126,18 @@ def add_card():
 def add_board():
     parameters = flask.request.json
     title = parameters["title"]
-    new_board = queries.add_board(title)
-    return new_board
+    print("adding board "+title)
+    id = queries.add_board(title)
+    print("assigned id: "+id)
+    return queries.insert_default_statuses(id)
+    # print("board should be added")
+    # return 200
 
 
 @app.route("/api/boards/delete/<board_id>", methods=["DELETE"])
 @json_response
 def delete_board(board_id):
+    queries.unlink_statuses_from_board(board_id)
     return queries.delete_board(board_id)
 
 
@@ -139,15 +145,22 @@ def delete_board(board_id):
 @json_response
 def get_statuses(board_id):
     board_statuses=queries.get_statuses_for_board(board_id)
-    found=False
-    for i in range(5):
-        status=queries.get_status(i)
-        for j in range(len(board_statuses)):
-            found=False
-            if status['title']==board_statuses[j]['title']:
-                found=True
-                break
-        if not found: board_statuses.append(status)
+    print("board statuses for "+board_id)
+    print(board_statuses)
+    # found=False
+    # for i in range(5):
+    #     status=queries.get_status(i)
+    #     for j in range(len(board_statuses)):
+    #         found=False
+    #         if status['title']==board_statuses[j]['title']:
+    #             found=True
+    #             break
+    #     if not found: board_statuses.append(status)
+    required_statuses=queries.get_required_statuses(board_id)
+    print(required_statuses)
+    for status in required_statuses:
+        if status in board_statuses: continue
+        else: board_statuses.append(status)
     return board_statuses
 
 
@@ -174,7 +187,8 @@ def delete_card(card_id: int):
 def delete_section():
     boardId = request.args.get("boardId")
     statusId = request.args.get("statusId")
-    return queries.deleteSectionCards(boardId, statusId)
+    queries.unlink_statuses_from_board(boardId,statusId)
+    return queries.deleteSectionCards(boardId,statusId)
 
 
 @app.route("/api/card/reorder", methods=["POST"])

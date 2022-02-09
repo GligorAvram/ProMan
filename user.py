@@ -16,8 +16,7 @@ class User(UserMixin):
 
     def claims(self):
         """Use this method to render all assigned claims on profile page."""
-        return {'name': self.name,
-                'email': self.email}.items()
+        return {"name": self.name, "email": self.email}.items()
 
     @staticmethod
     def get(user_id):

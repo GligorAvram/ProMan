@@ -101,7 +101,7 @@ function addButtonBuilder() {
 
 function addModalBuilder(){
     return `<div class="overlay hide" id="overlay">
-    <div class="dialog" id="NewBoard">
+    <div class="dialog hide" id="NewBoard">
         <form>
             <label> Name me!
                 <input type="text" id="boardName" value="new board">

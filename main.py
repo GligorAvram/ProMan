@@ -49,18 +49,24 @@ def get_boards():
     return queries.get_boards()
 
 
+@app.route("/api/status/<status_id>")
+@json_response
+def get_status(status_id):
+    return queries.get_status(status_id)
+
+
 @app.route("/api/status/add", methods=["POST"])
 @json_response
 def add_status():
     parameters = flask.request.json
     title = parameters["title"].lower()
-    return queries.add_status(title), 200
+    return queries.add_status(title)
 
 
 @app.route("/api/boards/<board_id>")
 @json_response
 def get_board(board_id):
-    return queries.get_board(board_id), 200
+    return queries.get_board(board_id)
 
 
 @app.route("/api/board/rename", methods=["POST"])
@@ -69,7 +75,7 @@ def rename_board():
     parameters = flask.request.json
     board_id = parameters["id"]
     new_name = parameters["name"]
-    return queries.rename_board(board_id, new_name), 200
+    return queries.rename_board(board_id, new_name)
 
 
 @app.route("/api/card/rename", methods=["POST"])
@@ -145,10 +151,10 @@ def get_statuses(board_id):
     return board_statuses
 
 
-@app.route("/api/statuses/<status_id>")
-@json_response
-def get_status(status_id):
-    return queries.get_status(status_id)
+# @app.route("/api/statuses/<status_id>")
+# @json_response
+# def get_status(status_id):
+#     return queries.get_status(status_id)
 
 
 @app.route("/api/boards/<int:board_id>/cards/")

@@ -82,7 +82,6 @@ function addBoardEventListeners(boardId) {
 function makeNewBoard(board) {
         const boardBuilder = htmlFactory(htmlTemplates.board);
         const content = boardBuilder(board);
-        console.log(content);
         dataHandler.getStatuses(board['id'])
         .then(statuses => {
             console.log(board['id'])

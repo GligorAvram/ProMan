@@ -79,13 +79,16 @@ export let dataHandler = {
         apiPost(`api/status/add`, payload);
   },
   reorderCard: async function (cardId, statusId) {
-  console.log(cardId + " " + statusId)
     let payload = {
                    cardId: cardId,
                    statusId, statusId
                    }
         apiPost(`api/card/reorder`, payload);
   },
+  getCardsForColumnOnBoard: async function(boardId, statusId){
+            return fetch(`/api/board/${boardId}/${statusId}`)
+    .then(response => response.json());
+  }
 };
 
 async function apiGet(url) {

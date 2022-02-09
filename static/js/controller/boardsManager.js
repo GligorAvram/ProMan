@@ -30,7 +30,7 @@ for (let board of await dataHandler.getBoards()) {
     
     const addModalBuiler=htmlFactory(htmlTemplates.addModal);
     const addModalDialog=addModalBuiler();
-    domManager.addChild("#root",addModalDialog,"after");
+    domManager.addChild("#root",addModalDialog,"beforebegin");
     domManager.addEventListener(
         '#submitName',
         "click",

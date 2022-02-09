@@ -46,7 +46,7 @@ export let cardsManager = {
 };
 
 function deleteButtonHandler(clickEvent) {
-    let cardId = clickEvent.target.getAttribute("data-card-id");
+    let cardId = clickEvent.target.parentElement.getAttribute("data-card-id");
     dataHandler.deleteCard(cardId);
 }
 

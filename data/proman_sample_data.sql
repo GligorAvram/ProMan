@@ -51,6 +51,7 @@ INSERT INTO statuses(title) VALUES ('new');
 INSERT INTO statuses(title) VALUES ('in progress');
 INSERT INTO statuses(title) VALUES ('testing');
 INSERT INTO statuses(title) VALUES ('done');
+INSERT INTO statuses(id, title) VALUES (0, 'archive');
 
 INSERT INTO boards(title) VALUES ('Board 1');
 INSERT INTO boards(title) VALUES ('Board 2');

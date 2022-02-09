@@ -4,48 +4,13 @@ import { domManager } from "../view/domManager.js";
 
 export let statusesManager = {
   loadStatuses: function (statuses, boardId) {
+    let archive=null;
     for (let status of statuses) {
-      const statusBuilder = htmlFactory(htmlTemplates.status);
-      const content = statusBuilder(status, boardId);
-      domManager.addChild(`.board[data-board-id="${boardId}"] .board-columns`, content, "last");
-
-      domManager.addEventListener(
-        `#rename-status${status.id}-hidden-board${boardId} .column-rename`,
-        "click",
-        renameCommit
-      );
-
-
-      domManager.addEventListener(
-      `#board${boardId}-column${status.id}`,
-      "drop",
-      dropHandler
-      )
-
-      domManager.addEventListener(
-      `#board${boardId}-column${status.id}`,
-      "dragover",
-      dragOverHandler
-      )
-
-      domManager.addEventListener(
-        `#rename-status${status.id}-hidden-board${boardId} .column-rename-cancel`,
-        "click",
-        renameCancel
-      );
-
-      domManager.addEventListener(
-        `.column-delete[data-status-id="${status.id}"]`,
-        "click",
-        deleteButtonHandler
-      );
-
-      domManager.addEventListener(
-        `#rename-status${status.id}-normal-board${boardId}`,
-        "dblclick",
-        toggleRenameStatus
-      );
+      if (status['title']!='archive') loadStatus(status,boardId);
+      else archive=status;
     }
+      
+    loadStatus(archive,boardId,true);
   },
 };
 
@@ -127,4 +92,48 @@ function refreshStatus(boardId, statusId) {
                     }
                 })
     });
+    console.log("dragging over")
+}
+
+function loadStatus(status,boardId, isArchive=false){
+  const statusBuilder = htmlFactory(htmlTemplates.status);
+  const content = statusBuilder(status, boardId, isArchive);
+  domManager.addChild(`.board[data-board-id="${boardId}"] .board-columns`, content, "last");
+
+  domManager.addEventListener(
+    `#rename-status${status.id}-hidden-board${boardId} .column-rename`,
+    "click",
+    renameCommit
+  );
+
+
+  domManager.addEventListener(
+  `#board${boardId}-column${status.id}`,
+  "drop",
+  dropHandler
+  )
+
+  domManager.addEventListener(
+  `#board${boardId}-column${status.id}`,
+  "dragover",
+  dragOverHandler
+  )
+
+  domManager.addEventListener(
+    `#rename-status${status.id}-hidden-board${boardId} .column-rename-cancel`,
+    "click",
+    renameCancel
+  );
+
+  domManager.addEventListener(
+    `.column-delete[data-status-id="${status.id}"]`,
+    "click",
+    deleteButtonHandler
+  );
+
+  domManager.addEventListener(
+    `#rename-status${status.id}-normal-board${boardId}`,
+    "dblclick",
+    toggleRenameStatus
+  );
 }

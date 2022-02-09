@@ -79,13 +79,12 @@ function addBoardEventListeners(boardId) {
 function makeNewBoard(board) {
         const boardBuilder = htmlFactory(htmlTemplates.board);
         const content = boardBuilder(board);
-        console.log(content)
-        dataHandler.getStatuses(board['id'])
+        dataHandler.getStatuses(board.id)
         .then(statuses => {
-            statusesManager.loadStatuses(statuses, board['id']);
+            statusesManager.loadStatuses(statuses, board.id);
 
-            dataHandler.getCardsByBoardId(board['id'])
-            .then(cards => cardsManager.loadCards(cards, board['id']));
+            dataHandler.getCardsByBoardId(board.id)
+            .then(cards => cardsManager.loadCards(cards, board.id));
         })
         return content;
 }
@@ -116,6 +115,7 @@ async function addNewBoard(clickEvent) {
 
 function addCard(clickEvent) {
     console.log("adding a new card")
+    refreshBoard(clickEvent)
 }
 
 function commitNewBoard(clickEvent) {
@@ -152,6 +152,7 @@ function cancelNewStatus(clickEvent) {
 
 function saveCard(clickEvent) {
     console.log("saving a card")
+    refreshBoard(clickEvent)
 }
 
 function cancelCard(clickEvent) {
@@ -162,27 +163,29 @@ function cancelCard(clickEvent) {
 
 
 function refreshBoard(clickEvent){
-    // const board = clickEvent.target.closest("section")
-    // const root = document.getElementById("root");
-    // let index = Array.from(root.children).indexOf(board);
-    // let prevBoardId;
-    //  try {
-    //     prevBoardId = board.previousElementSibling.getAttribute("data-board-id");
-    //  }
-    //  catch(error) {}
-    // dataHandler.getBoard(board.getAttribute("data-board-id"))
-    // .then(data => {
-    //     const newBoard = makeNewBoard(data[0]);
-    //     root.removeChild(board);
-    //     if(index  === 0){
-    //         domManager.addChild("#root", newBoard, "first");
-    //         addBoardEventListeners(data[0].id)
-    //     }
-    //     else{
-    //         domManager.addChild(`#accordion${prevBoardId}`, newBoard, "after");
-    //         addBoardEventListeners(data[0].id)
-    //     }
-    // })
+     const board = clickEvent.target.closest("section")
+     const root = document.getElementById("root");
+
+     let index = Array.from(root.children).indexOf(board);
+     let prevBoardId;
+      try {
+         prevBoardId = board.previousElementSibling.getAttribute("data-board-id");
+      }
+      catch(error) {}
+     dataHandler.getBoard(board.getAttribute("data-board-id"))
+     .then(data => {
+         const newBoard = makeNewBoard(data[0]);
+
+         root.removeChild(board);
+         if(index  === 0){
+             domManager.addChild(`#root`, newBoard, "first");
+             addBoardEventListeners(data[0].id)
+         }
+         else{
+             domManager.addChild(`#accordion${prevBoardId}`, newBoard, "after");
+             addBoardEventListeners(data[0].id)
+         }
+     })
 }
 
 async function getNewBoardName(){

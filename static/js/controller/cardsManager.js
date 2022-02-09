@@ -25,6 +25,12 @@ export let cardsManager = {
       );
 
       domManager.addEventListener(
+      `#card${card.id}`,
+        "dragend",
+        dragEnd
+      );
+
+      domManager.addEventListener(
       `.rename-card-title[data-card-id="${card.id}"]`,
         "click",
         commitCardRename
@@ -81,5 +87,6 @@ function dragStart(dragstart){
     dragstart.target.classList.add("dragging");
 }
 
-
-
+function dragEnd(dragend){
+    dragend.target.classList.remove("dragging");
+}

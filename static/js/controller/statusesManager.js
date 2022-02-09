@@ -92,12 +92,39 @@ function dropHandler(drop) {
     let boardId = drop.target.closest("fieldset").getAttribute("data-board-id");
     let statusId = drop.target.closest("fieldset").getAttribute("data-status-id");
 
-    if (originalBoard === boardId) {
-        dataHandler.reorderCard(cardId, statusId);
-    }
+//    if (originalBoard === boardId) {
+//        dataHandler.reorderCard(cardId, statusId);
+//    }
+
+    refreshStatus(originalBoard, originalStatus);
+    refreshStatus(boardId, statusId);
 }
 
 function dragOverHandler(event) {
     event.preventDefault();
-    console.log("dragging over")
+}
+
+function refreshStatus(boardId, statusId) {
+    const elementToRefresh = document.getElementById(`column${statusId}-board${boardId}`);
+    let index = Array.from(elementToRefresh.parentElement.children).indexOf(elementToRefresh);
+
+    elementToRefresh.parentElement.removeChild(elementToRefresh);
+
+    dataHandler.getStatus(statusId)
+    .then(data => {
+        const statusBuilder = htmlFactory(htmlTemplates.status);
+        const content = statusBuilder(data, boardId);
+
+        dataHandler.getCardsForColumnOnBoard(boardId, statusId)
+            .then(cards => {
+                cardsManager.loadCards(cards, board.id);
+
+                    if(index === 0){
+                        domManager.addChild(`#board-columns-table${boardId}`, content, "first");
+                    }
+                    else{
+                        domManager.addChild(`#board-columns-table${boardId}`, content, "first");
+                    }
+                })
+    });
 }

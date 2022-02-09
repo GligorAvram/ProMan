@@ -33,7 +33,7 @@ def get_board(board_id):
 def get_statuses_for_board(board_id):
     return data_manager.execute_select(
         """
-        SELECT DISTINCT cards.title, cards.id FROM cards
+        SELECT DISTINCT statuses.title, statuses.id FROM cards
             JOIN statuses ON statuses.id = cards.status_id
             WHERE board_id = %(id)s
             ORDER BY id;

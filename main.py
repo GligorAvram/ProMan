@@ -131,8 +131,6 @@ def add_board():
     id = queries.add_board(title)
     print("assigned id: " + id)
     return queries.insert_default_statuses(id)
-    # print("board should be added")
-    # return 200
 
 
 @app.route("/api/boards/delete/<board_id>", methods=["DELETE"])

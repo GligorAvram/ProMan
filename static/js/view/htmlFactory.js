@@ -58,7 +58,7 @@ function cardBuilder(card) {
     return `<div class="card d-flex flex-row justify-content-around" data-card-id="${card.id}" draggable="true" id="card${card['id']}" data-board-id="${card['board_id']}" data-status-id="${card['status_id']}">
                 <span class="clickable-card-title rename-normal" data-card-id="${card.id}" id="card${card.id}-normal">
                     <span id="card${card.id}-title" data-card-id="${card.id}">${card.title}</span>
-                    <button class="card-delete" data-card-id="${card.id}"><i class="fas fa-trash-alt"></i></button>
+                    <button class="card-delete" data-card-id="${card.id}"><i class="fas fa-trash-alt data-card-id="${card.id}"></i></button>
                 </span>
 
                 <span class="rename-hidden" data-card-id="${card.id}" id="card${card.id}-hidden">
@@ -75,7 +75,7 @@ function statusColumnBuilder(status, boardId, isArchive=false){
                 <div class="board-column-title" data-status-id="${status.id}">
                     <span class="rename-normal" data-status-id="${status.id}" id="rename-status${status.id}-normal-board${boardId}" data-board-id="${boardId}">
                         <span>${status.title}</span>
-                        <button class="column-delete" data-status-id="${status.id}"><i class="fas fa-trash-alt"></i></button>
+                        <button class="column-delete" data-status-id="${status.id}" data-board-id="${boardId}"><i class="fas fa-trash-alt" data-status-id="${status.id}" data-board-id="${boardId}"></i></button>
                     </span>
                 </div>
 

@@ -75,7 +75,7 @@ function statusColumnBuilder(status, boardId, isArchive=false){
                 <div class="board-column-title" data-status-id="${status.id}">
                     <span class="rename-normal" data-status-id="${status.id}" id="rename-status${status.id}-normal-board${boardId}" data-board-id="${boardId}">
                         <span>${status.title}</span>
-                        <button class="column-delete" data-status-id="${status.id}" data-board-id="${boardId}"><i class="fas fa-trash-alt" data-status-id="${status.id}" data-board-id="${boardId}"></i></button>
+                        <button id="delete-board-${boardId}-column${status.id}" data-status-id="${status.id}" data-board-id="${boardId}"><i class="fas fa-trash-alt" data-status-id="${status.id}" data-board-id="${boardId}"></i></button>
                     </span>
                 </div>
 
@@ -100,7 +100,7 @@ function addButtonBuilder() {
 
 
 function addModalBuilder(){
-    return `<section class="board mt-2 hide" id="overlay">
+    return `<section class="board mt-2 hide" id="accordion0" data-board-id="0">
     <div class="board-header" id="NewBoard">
         <form>
             <label> Name me!

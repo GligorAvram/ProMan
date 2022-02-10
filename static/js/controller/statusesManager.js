@@ -19,6 +19,7 @@ export let statusesManager = {
 
 
 function deleteButtonHandler(clickEvent) {
+console.log("clicked")
     let statusId = clickEvent.target.getAttribute("data-status-id");
     let boardId = clickEvent.target.getAttribute("data-board-id");
     dataHandler.deleteStatusCards(boardId,statusId);
@@ -107,7 +108,7 @@ function loadStatus(status,boardId, isArchive=false){
   const content = statusBuilder(status, boardId, isArchive);
   domManager.addChild(`.board[data-board-id="${boardId}"] .board-columns`, content, "last");
 
- addEventListeners(boardId, status.id);
+  addEventListeners(boardId, status.id);
 }
 
 function addEventListeners(boardId, statusId) {
@@ -137,7 +138,7 @@ function addEventListeners(boardId, statusId) {
   );
 
   domManager.addEventListener(
-    `.column-delete[data-status-id="${statusId}"]`,
+    `#delete-board-${boardId}-column${statusId}`,
     "click",
     deleteButtonHandler
   );

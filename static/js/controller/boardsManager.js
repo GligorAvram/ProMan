@@ -4,6 +4,31 @@ import { domManager } from "../view/domManager.js";
 import { cardsManager } from "./cardsManager.js";
 import { statusesManager } from "./statusesManager.js";
 
+const refreshBoardLogic = async function(clickEvent){
+     const board = clickEvent.target.closest("section")
+     const root = document.getElementById("root");
+     let boardId = board.getAttribute("data-board-id");
+
+     let index = Array.from(root.children).indexOf(board);
+
+     console.log(board.previousElementSibling)
+
+     let prevBoardId;
+      try {
+         prevBoardId = board.previousElementSibling.getAttribute("data-board-id");
+      }
+      catch(error) {}
+     dataHandler.getBoard(boardId)
+     .then(data => {
+         const newBoard = makeNewBoard(data[0]);
+         root.removeChild(board);
+
+         domManager.addChild(`#accordion${prevBoardId}`, newBoard, "after");
+         addBoardEventListeners(data[0].id)
+
+     })
+}
+
 
 export let boardsManager = {
   loadBoards: async function () {
@@ -41,31 +66,8 @@ for (let board of await dataHandler.getBoards()) {
         "click",
         abortCreateBoard);
 },
-  refreshBoard: async function(clickEvent) {
-     const board = clickEvent.target.closest("section")
-     const root = document.getElementById("root");
+  refreshBoard: refreshBoardLogic
 
-     let index = Array.from(root.children).indexOf(board);
-     let prevBoardId;
-      try {
-         prevBoardId = board.previousElementSibling.getAttribute("data-board-id");
-      }
-      catch(error) {}
-     dataHandler.getBoard(board.getAttribute("data-board-id"))
-     .then(data => {
-         const newBoard = makeNewBoard(data[0]);
-
-         root.removeChild(board);
-         if(index  === 0){
-             domManager.addChild(`#root`, newBoard, "first");
-             addBoardEventListeners(data[0].id)
-         }
-         else{
-             domManager.addChild(`#accordion${prevBoardId}`, newBoard, "after");
-             addBoardEventListeners(data[0].id)
-         }
-     })
-  }
 };
 
 function addBoardEventListeners(boardId) {
@@ -109,7 +111,7 @@ function addBoardEventListeners(boardId) {
 function makeNewBoard(board) {
         const boardBuilder = htmlFactory(htmlTemplates.board);
         const content = boardBuilder(board);
-        dataHandler.getStatuses(board['id'])
+        dataHandler.getStatuses(board.id)
         .then(statuses => {
             statusesManager.loadStatuses(statuses, board.id);
 
@@ -137,12 +139,12 @@ function deleteBoard(clickEvent) {
 }
 
 async function addNewBoard(clickEvent) {
-    document.getElementById("overlay").classList.toggle("hide");
+    document.getElementById("accordion0").classList.toggle("hide");
 }
 
 
 function addCard(clickEvent) {
-    refreshBoard(clickEvent)
+    refreshBoardLogic(clickEvent)
     let boardId = clickEvent.target.getAttribute("data-board-id");
     dataHandler.createNewCard("edit me",boardId,1);
 }
@@ -178,7 +180,7 @@ function cancelNewStatus(clickEvent) {
 
 function saveCard(clickEvent) {
     console.log("saving a card")
-    refreshBoard(clickEvent)
+    refreshBoardLogic(clickEvent)
 }
 
 function cancelCard(clickEvent) {
@@ -188,34 +190,10 @@ function cancelCard(clickEvent) {
 }
 
 
-//function refreshBoard(clickEvent){
-//     const board = clickEvent.target.closest("section")
-//     const root = document.getElementById("root");
-//
-//     let index = Array.from(root.children).indexOf(board);
-//     let prevBoardId;
-//      try {
-//         prevBoardId = board.previousElementSibling.getAttribute("data-board-id");
-//      }
-//      catch(error) {}
-//     dataHandler.getBoard(board.getAttribute("data-board-id"))
-//     .then(data => {
-//         const newBoard = makeNewBoard(data[0]);
-//
-//         root.removeChild(board);
-//         if(index  === 0){
-//             domManager.addChild(`#root`, newBoard, "first");
-//             addBoardEventListeners(data[0].id)
-//         }
-//         else{
-//             domManager.addChild(`#accordion${prevBoardId}`, newBoard, "after");
-//             addBoardEventListeners(data[0].id)
-//         }
-//     })
-//}
+
 
 async function getNewBoardName(){
-    document.getElementById("overlay").style.visibility = "hidden";
+    document.getElementById("accordion0").style.visibility = "hidden";
     let itemName=document.getElementById("boardName").value;
     dataHandler.createNewBoard(itemName).then(board => {
         const newBoard = makeNewBoard(board);
@@ -225,7 +203,7 @@ async function getNewBoardName(){
 }
 
 function abortCreateBoard(){
-    document.getElementById("overlay").classList.toggle("hide");
+    document.getElementById("accordion0").classList.toggle("hide");
 }
 
 function toggleArchive(){

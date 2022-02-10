@@ -100,8 +100,8 @@ function addButtonBuilder() {
 
 
 function addModalBuilder(){
-    return `<div class="overlay hide" id="overlay">
-    <div class="dialog hide" id="NewBoard">
+    return `<section class="board mt-2 hide" id="overlay">
+    <div class="board-header" id="NewBoard">
         <form>
             <label> Name me!
                 <input type="text" id="boardName" value="new board">
@@ -110,7 +110,7 @@ function addModalBuilder(){
             <button type="cancel" id="cancelDialog">Cancel</button>
         </form>
     </div>
-</div>`
+</section>`
 
 }
 

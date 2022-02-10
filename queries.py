@@ -255,7 +255,7 @@ def add_board(title):
         "INSERT INTO boards (title) VALUES (%(title)s) RETURNING id;",
         {"title": title},
         False,
-    )
+    )['id']
     print("assigned id:" + id)
     return id
 

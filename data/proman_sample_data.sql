@@ -27,7 +27,8 @@ DROP TABLE IF EXISTS boardstatuses;
 ---
 CREATE TABLE users (
     id serial NOT NULL UNIQUE,
-    name text
+    name text NOT NULL UNIQUE,
+    password text NOT NULL
 );
 
 CREATE TABLE statuses (

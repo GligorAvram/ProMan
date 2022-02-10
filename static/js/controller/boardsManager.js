@@ -144,9 +144,9 @@ async function addNewBoard(clickEvent) {
 
 
 function addCard(clickEvent) {
-    refreshBoardLogic(clickEvent)
     let boardId = clickEvent.target.getAttribute("data-board-id");
     dataHandler.createNewCard("edit me",boardId,1);
+    refreshBoardLogic(clickEvent)
 }
 
 function toggleRenameBoard(dblclick) {
@@ -165,6 +165,7 @@ function cancelRenameBoard(clickEvent) {
 function addStatus(clickEvent) {
     let boardId = clickEvent.target.getAttribute("data-board-id");
     dataHandler.createNewStatus("edit me",boardId,1);
+    refreshBoardLogic(clickEvent);
 }
 
 function commitNewStatus(clickEvent) {

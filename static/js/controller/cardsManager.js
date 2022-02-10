@@ -55,6 +55,7 @@ export let cardsManager = {
 function deleteButtonHandler(clickEvent) {
     let cardId = clickEvent.target.parentElement.getAttribute("data-card-id");
     dataHandler.deleteCard(cardId);
+    boardsManager.refreshBoard(clickEvent);
 }
 
 function toggleRenameCard(dblclick) {

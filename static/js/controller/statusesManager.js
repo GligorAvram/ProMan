@@ -81,7 +81,9 @@ function refreshStatus(boardId, statusId) {
     dataHandler.getStatus(statusId)
     .then(data => {
         const statusBuilder = htmlFactory(htmlTemplates.status);
-        const content = statusBuilder(data, boardId);
+        const content = statusBuilder(data, boardId, (statusId == '0'));
+
+
 
         if(index === 0){
         elementToRefresh.parentElement.removeChild(elementToRefresh);
@@ -93,13 +95,16 @@ function refreshStatus(boardId, statusId) {
             domManager.addChild(`#${previousSibling}`, content, "after");
         }
 
-
         dataHandler.getCardsForColumnOnBoard(boardId, statusId)
         .then(cards => {
             cardsManager.loadCards(cards, boardId);
 
             addEventListeners(boardId, statusId);
         })
+
+        if(statusId == '0') {
+            document.getElementById(`column0-board${boardId}`).classList.remove("hide");
+        }
     });
 }
 

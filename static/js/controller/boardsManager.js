@@ -11,8 +11,6 @@ const refreshBoardLogic = async function(clickEvent){
 
      let index = Array.from(root.children).indexOf(board);
 
-     console.log(board.previousElementSibling)
-
      let prevBoardId;
       try {
          prevBoardId = board.previousElementSibling.getAttribute("data-board-id");

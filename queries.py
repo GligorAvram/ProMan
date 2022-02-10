@@ -8,9 +8,16 @@ def get_card_status(status_id):
     )
 
 
-def get_boards():
-    return data_manager.execute_select("SELECT * FROM boards;")
-
+def get_boards(user_id=None):
+    if user_id:
+        return data_manager.execute_select(
+            """SELECT * FROM boards WHERE user_id is null or user_id=%(user_id)s;""",
+            {"user_id": user_id},
+        )
+    else:
+        return data_manager.execute_select(
+            """SELECT * FROM boards WHERE user_id is null;"""
+        )
 
 def get_cards_for_board(board_id):
     return data_manager.execute_select(
@@ -282,4 +289,27 @@ def unlink_status_from_board(boardId, statusId):
         "DELETE FROM boardstatuses WHERE board_id = %(board_id)s and status_id=%(status_id)s RETURNING 200;",
         {"board_id": boardId,"status_id":statusId},
         False,
+    )
+
+
+def get_user(username):
+    return data_manager.execute_select(
+        """SELECT * FROM users WHERE name=%(username)s""",
+        {"username": username},
+        False
+    )
+
+
+def create_new_user(email, password):
+    return data_manager.execute_select(
+    """INSERT INTO users(name, password)
+    VALUES(
+        %(user)s,
+        %(password)s
+        )
+    RETURNING
+    id;""",
+        {"user": email,
+         "password": password},
+        False
     )

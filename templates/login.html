@@ -1,25 +1,31 @@
-{% extends "template.html" %}
+{% extends "layout.html" %}
 
-{% block content %}
-<h2>Okta Hosted Login + Flask Example</h2>
+{% block body %}
 
-{% if current_user.is_authenticated %}
-<div>
-    <p>Welcome back, <span></span>!</p>
-    <p>You have successfully authenticated against your Okta org, and have been redirected back to this application.</p>
-    <p>Visit the <a href="{{ url_for('profile') }}">My Profile</a> page in this application to view the information
-        retrieved with your OAuth Access Token.</p>
+    <div>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+    </div>
+
+<div class="container">
+    <form action="{{ url_for('login') }}" method="post">
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" name="username" class="form-control" id="email" placeholder="Enter email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 </div>
-{% else %}
-<div>
-    <p>Hello!</p>
-    <p>If you're viewing this page then you have successfully configured and started this example server.</p>
-    <p>This example shows you how to to add the <a href="https://developer.okta.com/authentication-guide/implementing-authentication/auth-code.html">Authorization Code Flow</a> to your Flask application.</p>
-    <p>When you click the login button below, you will be redirected to the login page on your Okta org.  After you authenticate, you will be returned to this application.</p>
-</div>
 
-<form method="get" action="login">
-    <button id="login-button" class="btn btn-primary" type="submit">Login</button>
-</form>
-{% endif %}
-{% endblock content %}
+{% endblock %}

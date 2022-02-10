@@ -28,7 +28,6 @@ export let dataHandler = {
       title: boardTitle,
       }
     let response = await apiPost(`/api/boards/add`, payload);
-    console.log(response)
     return response;
 },
 createNewCard: async function (cardTitle, boardId, statusId) {

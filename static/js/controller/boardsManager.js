@@ -27,7 +27,6 @@ const refreshBoardLogic = async function(clickEvent){
      })
 }
 
-
 export let boardsManager = {
   loadBoards: async function () {
     const addButtonBuilder = htmlFactory(htmlTemplates.addButton);
@@ -64,8 +63,7 @@ for (let board of await dataHandler.getBoards()) {
         "click",
         abortCreateBoard);
 },
-  refreshBoard: refreshBoardLogic
-
+  refreshBoard: refreshBoardLogic,
 };
 
 function addBoardEventListeners(boardId) {
@@ -177,18 +175,11 @@ function cancelNewStatus(clickEvent) {
     draftColumn.parentNode.removeChild(draftColumn);
 }
 
-function saveCard(clickEvent) {
-    console.log("saving a card")
-    refreshBoardLogic(clickEvent)
-}
-
 function cancelCard(clickEvent) {
     clickEvent.preventDefault();
     const draftCard = document.getElementById("card0-normal");
     draftCard.parentNode.remove(draftCard);
 }
-
-
 
 
 async function getNewBoardName(){

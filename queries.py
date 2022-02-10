@@ -10,7 +10,6 @@ def get_card_status(status_id):
 
 def get_boards(user_id=None):
     if user_id:
-        print(user_id)
         return data_manager.execute_select(
             """SELECT * FROM boards WHERE user_id IS null OR user_id=%(user_id)s;""",
             {"user_id": user_id}
@@ -228,7 +227,6 @@ def add_status(title):
 
 
 def insert_default_statuses(id):
-    # print("inserting defauls statuses for id " + id)
     queries = "\n".join(
         [
             f"INSERT INTO boardstatuses VALUES (%(board_id)s, {i}) RETURNING 200;"

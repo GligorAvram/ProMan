@@ -134,7 +134,8 @@ function cancelRenameBoard(clickEvent) {
 }
 
 function addStatus(clickEvent) {
-    console.log("adding a status");
+    let boardId = clickEvent.target.getAttribute("data-board-id");
+    dataHandler.createNewStatus("edit me",boardId,1);
 }
 
 function commitNewStatus(clickEvent) {

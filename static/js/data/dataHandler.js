@@ -31,16 +31,24 @@ export let dataHandler = {
     console.log(response)
     return response;
 },
-  createNewCard: async function (cardTitle, boardId, statusId) {
+createNewCard: async function (cardTitle, boardId, statusId) {
+  let payload = {
+                 title: cardTitle,
+                 board_id: boardId,
+                 status_id: statusId
+                 }
+  let response = await apiPost(`api/card/add`, payload);
+  return response;
+},
+  createNewStatus: async function (cardTitle, boardId) {
         let payload = {
                        title: cardTitle,
-                       board_id: boardId,
-                       status_id: statusId
+                       board_id: boardId
                        }
-        let response = await apiPost(`api/card/add`, payload);
+        let response = await apiPost(`api/status/add`, payload);
         return response;
   },
-  deleteBoard: async function (boardId) {
+deleteBoard: async function (boardId) {
        apiDelete(`/api/boards/delete/${boardId}`);
   },
   deleteCard: async function (cardId) {

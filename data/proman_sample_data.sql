@@ -99,3 +99,24 @@ ALTER TABLE ONLY cards
 ALTER TABLE ONLY boardstatuses
     ADD CONSTRAINT fk_boardstatuses_board_id FOREIGN KEY (board_id) REFERENCES boards(id);
     ADD CONSTRAINT fk_boardstatuses_status_id FOREIGN KEY (status_id) REFERENCES statuses(id);
+
+CREATE TABLE public.boardstatuses
+(
+    board_id integer NOT NULL,
+    status_id integer NOT NULL,
+    CONSTRAINT board_id FOREIGN KEY (board_id)
+        REFERENCES public.boards (id) MATCH SIMPLE,
+    CONSTRAINT status_id FOREIGN KEY (status_id)
+        REFERENCES public.statuses (id) MATCH SIMPLE
+);
+
+INSERT INTO boardstatuses VALUES (1,0);
+INSERT INTO boardstatuses VALUES (1,1);
+INSERT INTO boardstatuses VALUES (1,2);
+INSERT INTO boardstatuses VALUES (1,3);
+INSERT INTO boardstatuses VALUES (1,4);
+INSERT INTO boardstatuses VALUES (2,0);
+INSERT INTO boardstatuses VALUES (2,1);
+INSERT INTO boardstatuses VALUES (2,2);
+INSERT INTO boardstatuses VALUES (2,3);
+INSERT INTO boardstatuses VALUES (2,4);

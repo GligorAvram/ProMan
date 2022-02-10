@@ -256,12 +256,22 @@ def reorder_card(card_id, status_id):
     )
 
 
-def add_board(title):
-    return data_manager.execute_select(
-        "INSERT INTO boards (title) VALUES (%(title)s) RETURNING id;",
-        {"title": title},
-        False,
-    )['id']
+def add_board(title, user_id=None):
+    if user_id:
+        return data_manager.execute_select(
+            "INSERT INTO boards (title, user_id) VALUES (%(title)s, %(user_id)s) RETURNING id;",
+            {
+             "title": title,
+             "user_id": user_id
+             },
+            False,
+        )['id']
+    else:
+        return data_manager.execute_select(
+            "INSERT INTO boards (title) VALUES (%(title)s) RETURNING id;",
+            {"title": title},
+            False,
+        )['id']
 
 
 def link_status_to_board(board_id, status_id):

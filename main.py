@@ -125,8 +125,8 @@ def add_card():
 def add_board():
     parameters = request.json
     title = parameters["title"]
-    id = queries.add_board(title)
-    new_board=queries.insert_default_statuses(id)
+    board_id = queries.add_board(title, session.get('user_id', None))
+    new_board=queries.insert_default_statuses(board_id)
     return new_board
 
 

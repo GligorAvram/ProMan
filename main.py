@@ -122,9 +122,10 @@ def add_card():
     return new_card
 
 
-@app.route("/boards/add", methods=["POST"])
+@app.route("/api/boards/add", methods=["POST"])
 @json_response
 def add_board():
+    print("hi")
     parameters = request.json
     title = parameters["title"]
     print("adding board " + title)

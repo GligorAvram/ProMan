@@ -24,12 +24,10 @@ export let dataHandler = {
     .then(response => response.json());
   },
   createNewBoard: async function (boardTitle) {
-    console.log("creating new board")
     let payload = {
       title: boardTitle,
       }
-    let response = await apiPost(`/boards/add`, payload);
-    console.log(response)
+    let response = await apiPost(`api/boards/add`, payload);
     return response;
 },
   createNewCard: async function (cardTitle, boardId, statusId) {

@@ -84,7 +84,6 @@ function makeNewBoard(board) {
         const content = boardBuilder(board);
         dataHandler.getStatuses(board['id'])
         .then(statuses => {
-            console.log(board['id'])
             console.log(statuses)
             statusesManager.loadStatuses(statuses, board.id);
 
@@ -120,10 +119,6 @@ function addCard(clickEvent) {
     refreshBoard(clickEvent)
     let boardId = clickEvent.target.getAttribute("data-board-id");
     dataHandler.createNewCard("edit me",boardId,1);
-}
-
-function commitNewBoard(clickEvent) {
-     console.log("save board " + clickEvent.target.getAttribute("data-board-id"));
 }
 
 function toggleRenameBoard(dblclick) {
@@ -193,10 +188,12 @@ function refreshBoard(clickEvent){
 }
 
 async function getNewBoardName(){
-    document.querySelector(".overlay").style.visibility = "hidden";
-    document.querySelector("#NewBoard").style.visibility = "hidden";
+    console.log("hi")
+    document.getElementById("overlay").classList.toggle = "hide";
     let itemName=document.getElementById("boardName").value;
-    let board=await dataHandler.createNewBoard(itemName);
+    console.log(itemName)
+    let board = await dataHandler.createNewBoard(itemName);
+    console.log(board)
     const newBoard = makeNewBoard(board);
     domManager.addChild("#root", newBoard, "first");
     addBoardEventListeners(board.id);

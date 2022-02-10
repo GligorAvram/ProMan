@@ -84,7 +84,6 @@ function makeNewBoard(board) {
         const content = boardBuilder(board);
         dataHandler.getStatuses(board['id'])
         .then(statuses => {
-            console.log(statuses)
             statusesManager.loadStatuses(statuses, board.id);
 
             dataHandler.getCardsByBoardId(board.id)
@@ -198,7 +197,7 @@ async function getNewBoardName(){
 }
 
 function abortCreateBoard(){
-    document.querySelector(".overlay").style.display = "none";
+    document.getElementById("overlay").classList.toggle("hide");
 }
 
 function toggleArchive(){

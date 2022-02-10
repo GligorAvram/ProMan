@@ -24,7 +24,6 @@ export let dataHandler = {
     .then(response => response.json());
   },
   createNewBoard: async function (boardTitle) {
-  console.log("hi")
     let payload = {
       title: boardTitle,
       }

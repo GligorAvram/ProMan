@@ -10,9 +10,10 @@ def get_card_status(status_id):
 
 def get_boards(user_id=None):
     if user_id:
+        print(user_id)
         return data_manager.execute_select(
-            """SELECT * FROM boards WHERE user_id is null or user_id=%(user_id)s;""",
-            {"user_id": user_id},
+            """SELECT * FROM boards WHERE user_id IS null OR user_id=%(user_id)s;""",
+            {"user_id": user_id}
         )
     else:
         return data_manager.execute_select(
@@ -322,4 +323,4 @@ def create_new_user(email, password):
         {"user": email,
          "password": password},
         False
-    )
+    )['id']

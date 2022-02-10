@@ -31,7 +31,7 @@ def index():
 @app.route("/api/boards")
 @json_response
 def get_boards():
-        return queries.get_boards(session.get('user_id', None))
+    return queries.get_boards(session.get('user_id', None))
 
 
 @app.route("/api/status/<status_id>")
@@ -144,11 +144,6 @@ def get_cards_for_status_on_board(board_id, status_id):
     return queries.get_cards_for_status_on_board(board_id, status_id)
 
 
-# @app.route("/api/statuses/<status_id>")
-# @json_response
-# def get_status(status_id):
-#     return queries.get_status(status_id)
-
 
 @app.route("/api/boards/<int:board_id>/cards/")
 @json_response
@@ -181,7 +176,6 @@ def reorder_card():
     return new_card
 
 
-
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -212,7 +206,6 @@ def register():
             return redirect(url_for('register'))
 
         user = queries.get_user(email)
-        print(user)
 
         if user is None:
             user_id = queries.create_new_user(email.lower(), generate_password_hash(password))

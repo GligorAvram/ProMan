@@ -1,18 +1,9 @@
 from flask import Flask, make_response, send_from_directory, session, flash
 from dotenv import load_dotenv
-import requests
 from flask import Flask, render_template, redirect, request, url_for
-# from flask_login import (
-#     LoginManager,
-#     current_user,
-#     login_required,
-#     login_user,
-#     logout_user,
-# )
+
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import is_access_token_valid, is_id_token_valid, config
-from user import User
 from util import json_response
 import mimetypes
 import queries
@@ -235,7 +226,6 @@ def register():
 def logout():
     session.clear()
     return redirect(url_for("index"))
-
 
 
 # pwa

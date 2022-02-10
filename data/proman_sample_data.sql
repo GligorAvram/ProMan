@@ -25,7 +25,10 @@ DROP TABLE IF EXISTS boardstatuses;
 ---
 --- create tables
 ---
-
+CREATE TABLE users (
+    id serial NOT NULL UNIQUE,
+    name text
+);
 
 CREATE TABLE statuses (
     id       SERIAL PRIMARY KEY     NOT NULL,
@@ -34,7 +37,8 @@ CREATE TABLE statuses (
 
 CREATE TABLE boards (
     id          SERIAL PRIMARY KEY  NOT NULL,
-    title       VARCHAR(200)        NOT NULL
+    title       VARCHAR(200)        NOT NULL,
+    user_id     INTEGER
 );
 
 CREATE TABLE cards (
@@ -109,14 +113,3 @@ CREATE TABLE public.boardstatuses
     CONSTRAINT status_id FOREIGN KEY (status_id)
         REFERENCES public.statuses (id) MATCH SIMPLE
 );
-
-INSERT INTO boardstatuses VALUES (1,0);
-INSERT INTO boardstatuses VALUES (1,1);
-INSERT INTO boardstatuses VALUES (1,2);
-INSERT INTO boardstatuses VALUES (1,3);
-INSERT INTO boardstatuses VALUES (1,4);
-INSERT INTO boardstatuses VALUES (2,0);
-INSERT INTO boardstatuses VALUES (2,1);
-INSERT INTO boardstatuses VALUES (2,2);
-INSERT INTO boardstatuses VALUES (2,3);
-INSERT INTO boardstatuses VALUES (2,4);

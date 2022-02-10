@@ -4,6 +4,7 @@ import { domManager } from "../view/domManager.js";
 import { cardsManager } from "./cardsManager.js";
 import { statusesManager } from "./statusesManager.js";
 
+
 export let boardsManager = {
   loadBoards: async function () {
     const addButtonBuilder = htmlFactory(htmlTemplates.addButton);
@@ -39,7 +40,33 @@ for (let board of await dataHandler.getBoards()) {
         '#cancelDialog',
         "click",
         abortCreateBoard);
-}};
+},
+  refreshBoard: async function(clickEvent) {
+     const board = clickEvent.target.closest("section")
+     const root = document.getElementById("root");
+
+     let index = Array.from(root.children).indexOf(board);
+     let prevBoardId;
+      try {
+         prevBoardId = board.previousElementSibling.getAttribute("data-board-id");
+      }
+      catch(error) {}
+     dataHandler.getBoard(board.getAttribute("data-board-id"))
+     .then(data => {
+         const newBoard = makeNewBoard(data[0]);
+
+         root.removeChild(board);
+         if(index  === 0){
+             domManager.addChild(`#root`, newBoard, "first");
+             addBoardEventListeners(data[0].id)
+         }
+         else{
+             domManager.addChild(`#accordion${prevBoardId}`, newBoard, "after");
+             addBoardEventListeners(data[0].id)
+         }
+     })
+  }
+};
 
 function addBoardEventListeners(boardId) {
     domManager.addEventListener(
@@ -161,31 +188,31 @@ function cancelCard(clickEvent) {
 }
 
 
-function refreshBoard(clickEvent){
-     const board = clickEvent.target.closest("section")
-     const root = document.getElementById("root");
-
-     let index = Array.from(root.children).indexOf(board);
-     let prevBoardId;
-      try {
-         prevBoardId = board.previousElementSibling.getAttribute("data-board-id");
-      }
-      catch(error) {}
-     dataHandler.getBoard(board.getAttribute("data-board-id"))
-     .then(data => {
-         const newBoard = makeNewBoard(data[0]);
-
-         root.removeChild(board);
-         if(index  === 0){
-             domManager.addChild(`#root`, newBoard, "first");
-             addBoardEventListeners(data[0].id)
-         }
-         else{
-             domManager.addChild(`#accordion${prevBoardId}`, newBoard, "after");
-             addBoardEventListeners(data[0].id)
-         }
-     })
-}
+//function refreshBoard(clickEvent){
+//     const board = clickEvent.target.closest("section")
+//     const root = document.getElementById("root");
+//
+//     let index = Array.from(root.children).indexOf(board);
+//     let prevBoardId;
+//      try {
+//         prevBoardId = board.previousElementSibling.getAttribute("data-board-id");
+//      }
+//      catch(error) {}
+//     dataHandler.getBoard(board.getAttribute("data-board-id"))
+//     .then(data => {
+//         const newBoard = makeNewBoard(data[0]);
+//
+//         root.removeChild(board);
+//         if(index  === 0){
+//             domManager.addChild(`#root`, newBoard, "first");
+//             addBoardEventListeners(data[0].id)
+//         }
+//         else{
+//             domManager.addChild(`#accordion${prevBoardId}`, newBoard, "after");
+//             addBoardEventListeners(data[0].id)
+//         }
+//     })
+//}
 
 async function getNewBoardName(){
     document.getElementById("overlay").style.visibility = "hidden";

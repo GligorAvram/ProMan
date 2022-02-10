@@ -2,6 +2,7 @@ import { dataHandler } from "../data/dataHandler.js";
 import { htmlFactory, htmlTemplates } from "../view/htmlFactory.js";
 import { domManager } from "../view/domManager.js";
 import { cardsManager } from "./cardsManager.js";
+import { boardsManager } from "./boardsManager.js";
 
 export let statusesManager = {
   loadStatuses: function (statuses, boardId) {
@@ -21,6 +22,7 @@ function deleteButtonHandler(clickEvent) {
     let statusId = clickEvent.target.getAttribute("data-status-id");
     let boardId = clickEvent.target.getAttribute("data-board-id");
     dataHandler.deleteStatusCards(boardId,statusId);
+    boardsManager.refreshBoard(clickEvent);
 }
 
 function toggleRenameStatus(dblclick) {

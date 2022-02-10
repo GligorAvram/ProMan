@@ -179,7 +179,7 @@ def delete_card(card_id: int):
 def delete_section():
     boardId = request.values.get("boardId")
     statusId = request.values.get("statusId")
-    queries.unlink_statuses_from_board(boardId, statusId)
+    queries.unlink_status_from_board(boardId, statusId)
     return queries.deleteSectionCards(boardId, statusId)
 
 

@@ -19,7 +19,6 @@ export let statusesManager = {
 
 
 function deleteButtonHandler(clickEvent) {
-console.log("clicked")
     let statusId = clickEvent.target.getAttribute("data-status-id");
     let boardId = clickEvent.target.getAttribute("data-board-id");
     dataHandler.deleteStatusCards(boardId,statusId);
@@ -51,7 +50,8 @@ function renameCommit(clickEvent){
     document.getElementById(`rename-status${statusId}-normal-board${boardId}`).firstElementChild.innerText = newName;
 
     dataHandler.renameColumn(boardId, statusId, newName);
-    renameCancel(clickEvent)
+    deleteButtonHandler(clickEvent);
+    renameCancel(clickEvent);
 }
 
 function dropHandler(drop) {

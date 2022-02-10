@@ -188,20 +188,17 @@ function refreshBoard(clickEvent){
 }
 
 async function getNewBoardName(){
-    console.log("hi")
-    document.getElementById("overlay").classList.toggle = "hide";
+    document.getElementById("overlay").style.visibility = "hidden";
     let itemName=document.getElementById("boardName").value;
-    console.log(itemName)
-    let board = await dataHandler.createNewBoard(itemName);
-    console.log(board)
-    const newBoard = makeNewBoard(board);
-    domManager.addChild("#root", newBoard, "first");
-    addBoardEventListeners(board.id);
+    dataHandler.createNewBoard(itemName).then(board => {
+        const newBoard = makeNewBoard(board);
+        domManager.addChild("#root", newBoard, "first");
+        addBoardEventListeners(board.id);
+    });
 }
 
 function abortCreateBoard(){
     document.querySelector(".overlay").style.display = "none";
-    document.querySelector("#choose_name").style.display = "none";
 }
 
 function toggleArchive(){

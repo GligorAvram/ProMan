@@ -125,13 +125,12 @@ def add_card():
 @app.route("/api/boards/add", methods=["POST"])
 @json_response
 def add_board():
-    print("hi")
+
     parameters = request.json
     title = parameters["title"]
-    print("adding board " + title)
     id = queries.add_board(title)
-    print("assigned id: " + id)
-    return queries.insert_default_statuses(id)
+    new_board=queries.insert_default_statuses(id)
+    return new_board
 
 
 @app.route("/api/boards/delete/<board_id>", methods=["DELETE"])

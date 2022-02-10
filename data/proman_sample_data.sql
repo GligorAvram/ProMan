@@ -19,11 +19,13 @@ SET default_with_oids = false;
 
 DROP TABLE IF EXISTS statuses CASCADE;
 DROP TABLE IF EXISTS boards CASCADE;
-DROP TABLE IF EXISTS cards;
+DROP TABLE IF EXISTS cards CASCADE;
+DROP TABLE IF EXISTS boardstatuses;
 
 ---
 --- create tables
 ---
+
 
 CREATE TABLE statuses (
     id       SERIAL PRIMARY KEY     NOT NULL,
@@ -43,6 +45,10 @@ CREATE TABLE cards (
     card_order  INTEGER             NOT NULL
 );
 
+CREATE TABLE boardstatuses (
+    board_id    INTEGER             NOT NULL,
+    status_id   INTEGER             NOT NULL,
+)
 ---
 --- insert data
 ---
@@ -69,6 +75,17 @@ INSERT INTO cards VALUES (nextval('cards_id_seq'), 2, 3, 'planning', 1);
 INSERT INTO cards VALUES (nextval('cards_id_seq'), 2, 4, 'done card 1', 1);
 INSERT INTO cards VALUES (nextval('cards_id_seq'), 2, 4, 'done card 1', 2);
 
+INSERT INTO boardstatuses VALUES (1,0);
+INSERT INTO boardstatuses VALUES (1,1);
+INSERT INTO boardstatuses VALUES (1,2);
+INSERT INTO boardstatuses VALUES (1,3);
+INSERT INTO boardstatuses VALUES (1,4);
+INSERT INTO boardstatuses VALUES (2,0);
+INSERT INTO boardstatuses VALUES (2,1);
+INSERT INTO boardstatuses VALUES (2,2);
+INSERT INTO boardstatuses VALUES (2,3);
+INSERT INTO boardstatuses VALUES (2,4);
+
 ---
 --- add constraints
 ---
@@ -79,6 +96,9 @@ ALTER TABLE ONLY cards
 ALTER TABLE ONLY cards
     ADD CONSTRAINT fk_cards_status_id FOREIGN KEY (status_id) REFERENCES statuses(id);
 
+ALTER TABLE ONLY boardstatuses
+    ADD CONSTRAINT fk_boardstatuses_board_id FOREIGN KEY (board_id) REFERENCES boards(id);
+    ADD CONSTRAINT fk_boardstatuses_status_id FOREIGN KEY (status_id) REFERENCES statuses(id);
 
 CREATE TABLE public.boardstatuses
 (

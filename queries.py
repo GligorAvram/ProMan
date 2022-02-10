@@ -220,7 +220,7 @@ def add_status(title):
 
 
 def insert_default_statuses(id):
-    print("inserting defauls statuses for id " + id)
+    # print("inserting defauls statuses for id " + id)
     queries = "\n".join(
         [
             f"INSERT INTO boardstatuses VALUES (%(board_id)s, {i}) RETURNING 200;"
@@ -250,14 +250,11 @@ def reorder_card(card_id, status_id):
 
 
 def add_board(title):
-    print("inserting board" + title)
-    id = data_manager.execute_select(
+    return data_manager.execute_select(
         "INSERT INTO boards (title) VALUES (%(title)s) RETURNING id;",
         {"title": title},
         False,
-    )
-    print("assigned id:" + id)
-    return id
+    )['id']
 
 
 def link_status_to_board(board_id, status_id):

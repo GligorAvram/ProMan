@@ -181,7 +181,6 @@ function cancelCard(clickEvent) {
     draftCard.parentNode.remove(draftCard);
 }
 
-
 async function getNewBoardName(){
     document.getElementById("accordion0").style.visibility = "hidden";
     let itemName=document.getElementById("boardName").value;

@@ -50,7 +50,6 @@ function renameCommit(clickEvent){
     document.getElementById(`rename-status${statusId}-normal-board${boardId}`).firstElementChild.innerText = newName;
 
     dataHandler.renameColumn(boardId, statusId, newName);
-    deleteButtonHandler(clickEvent);
     renameCancel(clickEvent);
 }
 
@@ -82,8 +81,6 @@ function refreshStatus(boardId, statusId) {
     .then(data => {
         const statusBuilder = htmlFactory(htmlTemplates.status);
         const content = statusBuilder(data, boardId, (statusId == '0'));
-
-
 
         if(index === 0){
         elementToRefresh.parentElement.removeChild(elementToRefresh);

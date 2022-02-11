@@ -12,12 +12,13 @@ def get_boards(user_id=None):
     if user_id:
         return data_manager.execute_select(
             """SELECT * FROM boards WHERE user_id IS null OR user_id=%(user_id)s;""",
-            {"user_id": user_id}
+            {"user_id": user_id},
         )
     else:
         return data_manager.execute_select(
             """SELECT * FROM boards WHERE user_id is null;"""
         )
+
 
 def get_cards_for_board(board_id):
     return data_manager.execute_select(
@@ -259,18 +260,15 @@ def add_board(title, user_id=None):
     if user_id:
         return data_manager.execute_select(
             "INSERT INTO boards (title, user_id) VALUES (%(title)s, %(user_id)s) RETURNING id;",
-            {
-             "title": title,
-             "user_id": user_id
-             },
+            {"title": title, "user_id": user_id},
             False,
-        )['id']
+        )["id"]
     else:
         return data_manager.execute_select(
             "INSERT INTO boards (title) VALUES (%(title)s) RETURNING id;",
             {"title": title},
             False,
-        )['id']
+        )["id"]
 
 
 def link_status_to_board(board_id, status_id):
@@ -293,32 +291,30 @@ def get_cards_for_status_on_board(board_id, status_id):
         },
     )
 
+
 def unlink_status_from_board(boardId, statusId):
     return data_manager.execute_select(
         "DELETE FROM boardstatuses WHERE board_id = %(board_id)s and status_id=%(status_id)s RETURNING 200;",
-        {"board_id": boardId,"status_id":statusId},
+        {"board_id": boardId, "status_id": statusId},
         False,
     )
 
 
 def get_user(username):
     return data_manager.execute_select(
-        """SELECT * FROM users WHERE name=%(username)s""",
-        {"username": username},
-        False
+        """SELECT * FROM users WHERE name=%(username)s""", {"username": username}, False
     )
 
 
 def create_new_user(email, password):
     return data_manager.execute_select(
-    """INSERT INTO users(name, password)
+        """INSERT INTO users(name, password)
     VALUES(
         %(user)s,
         %(password)s
         )
     RETURNING
     id;""",
-        {"user": email,
-         "password": password},
-        False
-    )['id']
+        {"user": email, "password": password},
+        False,
+    )["id"]

@@ -294,6 +294,7 @@ def get_cards_for_status_on_board(board_id, status_id):
         },
     )
 
+
 def unlink_status_from_board(boardId, statusId):
     return data_manager.execute_select(
         "DELETE FROM boardstatuses WHERE board_id = %(board_id)s and status_id=%(status_id)s RETURNING 200;",
@@ -322,4 +323,4 @@ def create_new_user(email, password):
         {"user": email,
          "password": password},
         False
-    )
+    )['id']

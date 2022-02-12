@@ -60,6 +60,7 @@ function deleteButtonHandler(clickEvent) {
 
 function toggleRenameCard(dblclick) {
     let cardId = dblclick.target.getAttribute("data-card-id");
+    document.getElementById(`card${cardId}`).setAttribute('draggable', false);
 
     document.getElementById(`card${cardId}-normal`).style.display = "none";
     document.getElementById(`card${cardId}-hidden`).style.display = "inline-block";
@@ -68,7 +69,7 @@ function toggleRenameCard(dblclick) {
 function cancelCardRename(clickEvent) {
     clickEvent.preventDefault();
     let cardId = clickEvent.target.parentElement.getAttribute("data-card-id");
-
+    document.getElementById(`card${cardId}`).setAttribute('draggable', true);
     document.getElementById(`card${cardId}-normal`).style.display = "inline-block";
     document.getElementById(`card${cardId}-hidden`).style.display = "none";
 }

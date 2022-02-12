@@ -62,6 +62,14 @@ def get_required_statuses(board_id):
     )
 
 
+def get_special_statuses():
+    return data_manager.execute_select(
+        """
+        SELECT id FROM statuses
+        WHERE title='new' OR title='in progress' OR title='edit me' OR title='done' OR title='testing';
+        """
+    )
+
 def get_status(status_id):
     return data_manager.execute_select(
         "SELECT title, id FROM statuses WHERE id = %(id)s;",

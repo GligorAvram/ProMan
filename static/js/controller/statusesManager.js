@@ -47,11 +47,19 @@ function renameCommit(clickEvent){
     let newName = clickEvent.target.previousElementSibling.value;
 
     document.getElementById(`rename-status${statusId}-normal-board${boardId}`).firstElementChild.innerText = newName;
-
     dataHandler.renameColumn(boardId, statusId, newName).
     then(data => {
         const renamedColumn = document.getElementById(`column${statusId}-board${boardId}`).id = `column${data}-board${boardId}`;
-        refreshStatus(boardId, data);
+        document.getElementById(`change_name${boardId}-${statusId}`).dataset.statusId = `${data}`;
+        document.getElementById(`board${boardId}-column${statusId}`).dataset.statusId = `${data}`;
+        dataHandler.getSpecialStatuses().
+        then(statuses => {
+            statuses.forEach(element => {
+                if(element.id == statusId){
+                    dataHandler.deleteStatusCards(boardId, statusId);
+                }
+            })
+        })
     });
     renameCancel(clickEvent);
 }
@@ -77,7 +85,9 @@ function dragOverHandler(event) {
 }
 
 function refreshStatus(boardId, statusId) {
+console.log(boardId, statusId)
     const elementToRefresh = document.getElementById(`column${statusId}-board${boardId}`);
+    console.log(elementToRefresh)
     let index = Array.from(elementToRefresh.parentElement.children).indexOf(elementToRefresh);
 
     dataHandler.getStatus(statusId)

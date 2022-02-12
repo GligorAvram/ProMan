@@ -167,6 +167,12 @@ def delete_section():
     return queries.deleteSectionCards(boardId, statusId)
 
 
+@app.route("/api/status/special")
+@json_response
+def get_special_statuses():
+    return queries.get_special_statuses()
+
+
 @app.route("/api/card/reorder", methods=["POST"])
 @json_response
 def reorder_card():

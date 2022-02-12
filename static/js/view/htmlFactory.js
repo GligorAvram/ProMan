@@ -82,7 +82,7 @@ function statusColumnBuilder(status, boardId, isArchive=false){
                 <div class="form-status-column">
                     <span class="rename-hidden" data-status-id="${status.id}" id="rename-status${status.id}-hidden-board${boardId}" data-board-id="${boardId}">
                         <input type="text" value="${status.title}">
-                        <button class="column-rename" data-status-id="${status.id}" data-board-id="${boardId}">Save</button>
+                        <button class="column-rename" id="change_name${boardId}-${status.id}" data-status-id="${status.id}" data-board-id="${boardId}">Save</button>
                         <button class="column-rename-cancel" data-status-id="${status.id}" data-board-id="${boardId}">Cancel</button>
                     </span>
                 </div>

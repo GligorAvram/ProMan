@@ -11,6 +11,10 @@ export let dataHandler = {
     return fetch(`/api/${boardId}/statuses`)
         .then(response => response.json());
   },
+  getSpecialStatuses: async function() {
+    return fetch(`/api/status/special`)
+        .then(response => response.json());
+  },
   getStatus: async function (statusId) {
     return fetch(`/api/status/${statusId}`)
     .then(response => response.json());
@@ -86,6 +90,7 @@ deleteBoard: async function (boardId) {
         apiPost(`api/status/add`, payload);
   },
   reorderCard: async function (cardId, statusId) {
+  console.log(cardId, statusId)
     let payload = {
                    cardId: cardId,
                    statusId, statusId

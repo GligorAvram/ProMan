@@ -153,21 +153,6 @@ def get_board_id(new_name):
     )["id"]
 
 
-def rename_status(board_id, status_id, new_name):
-    # return data_manager.execute_select(
-    #     """
-    #         UPDATE cards
-    #         SET title = %(new_name)s
-    #         WHERE id = %(card_id)s
-    #         RETURNING 200;
-    #     """,
-    #     {"card_id": card_id,
-    #      "new_name": new_name},
-    #     False
-    # )
-    pass
-
-
 def check_if_status_changable(board_id, status_id):
     return data_manager.execute_select(
         "SELECT COUNT(*) FROM cards WHERE board_id = %(board_id)s AND status_id = %(status_id)s;",

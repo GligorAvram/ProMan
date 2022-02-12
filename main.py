@@ -90,10 +90,8 @@ def rename_status():
 
     new_id = queries.get_status_id(new_name)
     if queries.check_if_status_changable(board_id, new_id) == 0:
-        print("whi")
         return queries.changeCardTitles(board_id, status_id, new_id)
     else:
-        print("hi")
         return 200
 
 
@@ -120,8 +118,8 @@ def add_board():
     parameters = request.json
     title = parameters["title"]
     board_id = queries.add_board(title, session.get('user_id', None))
-    new_board=queries.insert_default_statuses(board_id)
-    return new_board
+    queries.insert_default_statuses(board_id)
+    return queries.get_board(board_id)
 
 
 @app.route("/api/boards/delete/<board_id>", methods=["DELETE"])
@@ -145,7 +143,6 @@ def get_statuses(board_id):
 @json_response
 def get_cards_for_status_on_board(board_id, status_id):
     return queries.get_cards_for_status_on_board(board_id, status_id)
-
 
 
 @app.route("/api/boards/<int:board_id>/cards/")

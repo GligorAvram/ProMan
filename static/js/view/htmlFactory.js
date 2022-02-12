@@ -106,8 +106,8 @@ function addModalBuilder(){
             <label> Name me!
                 <input type="text" id="boardName" value="new board">
             </label>
-            <button type="submit" id="submitName">Insert</button>
-            <button type="cancel" id="cancelDialog">Cancel</button>
+            <button type="button" id="submitName">Insert</button>
+            <button type="button" id="cancelDialog">Cancel</button>
         </form>
     </div>
 </section>`

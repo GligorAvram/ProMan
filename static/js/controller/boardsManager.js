@@ -55,11 +55,11 @@ for (let board of await dataHandler.getBoards()) {
     const addModalDialog=addModalBuiler();
     domManager.addChild("#root",addModalDialog,"first");
     domManager.addEventListener(
-        '#submitName',
+        `#submitName`,
         "click",
         getNewBoardName);
     domManager.addEventListener(
-        '#cancelDialog',
+        `#cancelDialog`,
         "click",
         abortCreateBoard);
 },
@@ -182,9 +182,12 @@ function cancelCard(clickEvent) {
 }
 
 async function getNewBoardName(){
-    document.getElementById("accordion0").style.visibility = "hidden";
+    document.getElementById("accordion0").classList.toggle("hide");
     let itemName=document.getElementById("boardName").value;
-    dataHandler.createNewBoard(itemName).then(board => {
+    document.getElementById("boardName").value = "new board";
+    dataHandler.createNewBoard(itemName)
+    .then(boardInfo => {
+        let board = boardInfo[0];
         const newBoard = makeNewBoard(board);
         domManager.addChild("#root", newBoard, "first");
         addBoardEventListeners(board.id);

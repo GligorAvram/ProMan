@@ -4,6 +4,40 @@ import { domManager } from "../view/domManager.js";
 import { cardsManager } from "./cardsManager.js";
 import { boardsManager } from "./boardsManager.js";
 
+
+function refreshStatusLogic(boardId, statusId) {
+    const elementToRefresh = document.getElementById(`column${statusId}-board${boardId}`);
+    let index = Array.from(elementToRefresh.parentElement.children).indexOf(elementToRefresh);
+
+    dataHandler.getStatus(statusId)
+    .then(data => {
+        const statusBuilder = htmlFactory(htmlTemplates.status);
+        const content = statusBuilder(data, boardId, (statusId == '0'));
+
+        if(index === 0){
+        elementToRefresh.parentElement.removeChild(elementToRefresh);
+            domManager.addChild(`#board-columns-table${boardId}`, content, "first");
+        }
+        else{
+            const previousSibling = elementToRefresh.previousElementSibling.id;
+            elementToRefresh.parentElement.removeChild(elementToRefresh);
+            domManager.addChild(`#${previousSibling}`, content, "after");
+        }
+
+        dataHandler.getCardsForColumnOnBoard(boardId, statusId)
+        .then(cards => {
+            cardsManager.loadCards(cards, boardId);
+
+            addEventListeners(boardId, statusId);
+        })
+
+        if(statusId == '0') {
+            document.getElementById(`column0-board${boardId}`).classList.remove("hide");
+        }
+    });
+}
+
+
 export let statusesManager = {
   loadStatuses: function (statuses, boardId) {
     let archive=null;
@@ -15,6 +49,7 @@ export let statusesManager = {
       }
     }
   },
+  refreshStatus: refreshStatusLogic,
 };
 
 function deleteButtonHandler(clickEvent) {
@@ -57,6 +92,7 @@ function renameCommit(clickEvent){
             statuses.forEach(element => {
                 if(element.id == statusId){
                     dataHandler.deleteStatusCards(boardId, statusId);
+                    refreshStatusLogic(clickEvent)
                 }
             })
         })
@@ -76,47 +112,15 @@ function dropHandler(drop) {
         dataHandler.reorderCard(cardId, statusId);
     }
 
-    refreshStatus(originalBoard, originalStatus);
-    refreshStatus(boardId, statusId);
+    refreshStatusLogic(originalBoard, originalStatus);
+    refreshStatusLogic(boardId, statusId);
 }
 
 function dragOverHandler(event) {
     event.preventDefault();
 }
 
-function refreshStatus(boardId, statusId) {
-console.log(boardId, statusId)
-    const elementToRefresh = document.getElementById(`column${statusId}-board${boardId}`);
-    console.log(elementToRefresh)
-    let index = Array.from(elementToRefresh.parentElement.children).indexOf(elementToRefresh);
 
-    dataHandler.getStatus(statusId)
-    .then(data => {
-        const statusBuilder = htmlFactory(htmlTemplates.status);
-        const content = statusBuilder(data, boardId, (statusId == '0'));
-
-        if(index === 0){
-        elementToRefresh.parentElement.removeChild(elementToRefresh);
-            domManager.addChild(`#board-columns-table${boardId}`, content, "first");
-        }
-        else{
-            const previousSibling = elementToRefresh.previousElementSibling.id;
-            elementToRefresh.parentElement.removeChild(elementToRefresh);
-            domManager.addChild(`#${previousSibling}`, content, "after");
-        }
-
-        dataHandler.getCardsForColumnOnBoard(boardId, statusId)
-        .then(cards => {
-            cardsManager.loadCards(cards, boardId);
-
-            addEventListeners(boardId, statusId);
-        })
-
-        if(statusId == '0') {
-            document.getElementById(`column0-board${boardId}`).classList.remove("hide");
-        }
-    });
-}
 
 function loadStatus(status,boardId, isArchive=false){
   const statusBuilder = htmlFactory(htmlTemplates.status);

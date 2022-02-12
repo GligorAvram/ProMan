@@ -184,7 +184,7 @@ def changeCardTitles(board_id, status_id, new_id):
            status_id = %(new_id)s
         WHERE
            board_id = %(board_id)s AND status_id = %(status_id)s
-        RETURNING 200
+        RETURNING %(new_id)s;
         """,
         {
             "board_id": board_id,

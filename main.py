@@ -85,12 +85,15 @@ def rename_status():
     new_name = parameters["name"]
     if queries.check_if_status_exists(new_name) == 0:
         new_id = queries.insert_new_status(new_name)
-        return queries.changeCardTitles(board_id, status_id, new_id)
+        queries.changeCardTitles(board_id, status_id, new_id)
+        return new_id
 
     new_id = queries.get_status_id(new_name)
     if queries.check_if_status_changable(board_id, new_id) == 0:
+        print("whi")
         return queries.changeCardTitles(board_id, status_id, new_id)
     else:
+        print("hi")
         return 200
 
 

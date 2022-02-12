@@ -46,9 +46,10 @@ def add_status():
     parameters = request.json
     board_id = parameters["board_id"]
     title = parameters['title']
-    if queries.check_if_status_exists(title)==0:
+    if queries.check_if_status_exists(title) == 0:
         new_id = queries.insert_new_status(title)
-    else: new_id=queries.get_status_id(title)
+    else:
+        new_id = queries.get_status_id(title)
     return queries.link_status_to_board(board_id, new_id)
 
 

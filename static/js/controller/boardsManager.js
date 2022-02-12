@@ -21,9 +21,14 @@ const refreshBoardLogic = async function(clickEvent){
          const newBoard = makeNewBoard(data[0]);
          root.removeChild(board);
 
-         domManager.addChild(`#accordion${prevBoardId}`, newBoard, "after");
-         addBoardEventListeners(data[0].id)
+         if(index === 0){
+            domManager.addChild(`#root`, newBoard, "after");
+         }
+         else{
+            domManager.addChild(`#accordion${prevBoardId}`, newBoard, "first");
+         }
 
+         addBoardEventListeners(data[0].id)
      })
 }
 
@@ -36,7 +41,7 @@ export let boardsManager = {
     domManager.addEventListener(
         `#board-add-button`,
         "click",
-    addNewBoard
+        addNewBoard
   );
 
     domManager.addEventListener(
@@ -51,8 +56,8 @@ for (let board of await dataHandler.getBoards()) {
         addBoardEventListeners(board.id);
         }
     
-    const addModalBuiler=htmlFactory(htmlTemplates.addModal);
-    const addModalDialog=addModalBuiler();
+    const addModalBuilder=htmlFactory(htmlTemplates.addModal);
+    const addModalDialog=addModalBuilder();
     domManager.addChild("#root",addModalDialog,"first");
     domManager.addEventListener(
         `#submitName`,
@@ -76,31 +81,31 @@ function addBoardEventListeners(boardId) {
     domManager.addEventListener(
         `.delete-board[data-board-id="${boardId}"]`,
         "click",
-    deleteBoard
+        deleteBoard
     );
 
     domManager.addEventListener(
         `.clickable-board-title[data-board-id="${boardId}"]`,
         "dblclick",
-    toggleRenameBoard
+        toggleRenameBoard
     );
 
     domManager.addEventListener(
         `.rename-board-title[data-board-id="${boardId}"]`,
         "click",
-    renameBoard
+        renameBoard
     );
 
     domManager.addEventListener(
         `.cancel-rename-board[data-board-id="${boardId}"]`,
         "click",
-    cancelRenameBoard
+        cancelRenameBoard
     );
 
     domManager.addEventListener(
         `#board${boardId}-add-status`,
         "click",
-    addStatus
+        addStatus
     );
 }
 
@@ -160,13 +165,8 @@ function cancelRenameBoard(clickEvent) {
 
 function addStatus(clickEvent) {
     let boardId = clickEvent.target.getAttribute("data-board-id");
-    dataHandler.createNewStatus("edit me",boardId,1);
+    dataHandler.createNewStatus("edit me", boardId);
     refreshBoardLogic(clickEvent);
-}
-
-function commitNewStatus(clickEvent) {
-    clickEvent.preventDefault();
-    dataHandler.addNewStatus();
 }
 
 function cancelNewStatus(clickEvent) {

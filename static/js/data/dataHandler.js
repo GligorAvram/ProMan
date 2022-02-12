@@ -77,7 +77,6 @@ deleteBoard: async function (boardId) {
                        name: newName
                        }
         let response = apiPost(`api/status/rename`, payload);
-//        console.log(response)
         return response;
   },
   addStatus: async function (title) {

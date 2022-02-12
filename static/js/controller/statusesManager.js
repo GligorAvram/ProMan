@@ -17,7 +17,6 @@ export let statusesManager = {
   },
 };
 
-
 function deleteButtonHandler(clickEvent) {
     let statusId = clickEvent.target.getAttribute("data-status-id");
     let boardId = clickEvent.target.getAttribute("data-board-id");
@@ -52,8 +51,7 @@ function renameCommit(clickEvent){
     dataHandler.renameColumn(boardId, statusId, newName).
     then(data => {
         const renamedColumn = document.getElementById(`column${statusId}-board${boardId}`).id = `column${data}-board${boardId}`;
-        refreshStatus(boardId, data)
-
+        refreshStatus(boardId, data);
     });
     renameCancel(clickEvent);
 }
@@ -80,7 +78,6 @@ function dragOverHandler(event) {
 
 function refreshStatus(boardId, statusId) {
     const elementToRefresh = document.getElementById(`column${statusId}-board${boardId}`);
-    console.log(boardId, statusId)
     let index = Array.from(elementToRefresh.parentElement.children).indexOf(elementToRefresh);
 
     dataHandler.getStatus(statusId)

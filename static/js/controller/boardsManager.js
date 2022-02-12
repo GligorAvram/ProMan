@@ -22,10 +22,10 @@ const refreshBoardLogic = async function(clickEvent){
          root.removeChild(board);
 
          if(index === 0){
-            domManager.addChild(`#root`, newBoard, "after");
+            domManager.addChild(`#root`, newBoard, "first");
          }
          else{
-            domManager.addChild(`#accordion${prevBoardId}`, newBoard, "first");
+            domManager.addChild(`#accordion${prevBoardId}`, newBoard, "after");
          }
 
          addBoardEventListeners(data[0].id)

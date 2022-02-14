@@ -147,7 +147,7 @@ async function addNewBoard(clickEvent) {
 function addCard(clickEvent) {
     let boardId = clickEvent.target.getAttribute("data-board-id");
     dataHandler.createNewCard("edit me",boardId,1);
-    statusesManager.refreshStatus(boardId, 1);
+    statusesManager.refreshStatus(boardId, 1, clickEvent);
 }
 
 function toggleRenameBoard(dblclick) {

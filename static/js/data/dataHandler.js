@@ -90,7 +90,6 @@ deleteBoard: async function (boardId) {
         apiPost(`api/status/add`, payload);
   },
   reorderCard: async function (cardId, statusId) {
-  console.log(cardId, statusId)
     let payload = {
                    cardId: cardId,
                    statusId, statusId

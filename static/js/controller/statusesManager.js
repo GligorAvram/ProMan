@@ -5,12 +5,18 @@ import { cardsManager } from "./cardsManager.js";
 import { boardsManager } from "./boardsManager.js";
 
 
-function refreshStatusLogic(boardId, statusId) {
+function refreshStatusLogic(boardId, statusId, clickEvent) {
     const elementToRefresh = document.getElementById(`column${statusId}-board${boardId}`);
-    let index = Array.from(elementToRefresh.parentElement.children).indexOf(elementToRefresh);
 
-    dataHandler.getStatus(statusId)
-    .then(data => {
+    if(elementToRefresh === null){
+        boardsManager.refreshBoard(clickEvent);
+    }
+    else{
+
+        let index = Array.from(elementToRefresh.parentElement.children).indexOf(elementToRefresh);
+
+        dataHandler.getStatus(statusId)
+        .then(data => {
         const statusBuilder = htmlFactory(htmlTemplates.status);
         const content = statusBuilder(data, boardId, (statusId == '0'));
 
@@ -34,7 +40,8 @@ function refreshStatusLogic(boardId, statusId) {
         if(statusId == '0') {
             document.getElementById(`column0-board${boardId}`).classList.remove("hide");
         }
-    });
+        });
+    }
 }
 
 
@@ -92,7 +99,7 @@ function renameCommit(clickEvent){
             statuses.forEach(element => {
                 if(element.id == statusId){
                     dataHandler.deleteStatusCards(boardId, statusId);
-                    refreshStatusLogic(clickEvent)
+                    refreshStatusLogic(boardId, statusId, clickEvent);
                 }
             })
         })
@@ -112,8 +119,8 @@ function dropHandler(drop) {
         dataHandler.reorderCard(cardId, statusId);
     }
 
-    refreshStatusLogic(originalBoard, originalStatus);
-    refreshStatusLogic(boardId, statusId);
+    refreshStatusLogic(originalBoard, originalStatus, clickEvent);
+    refreshStatusLogic(boardId, statusId, clickEvent);
 }
 
 function dragOverHandler(event) {

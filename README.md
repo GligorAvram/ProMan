@@ -13,6 +13,7 @@ A task management webapp built with vanilla Javascript
 ![shield](https://img.shields.io/github/stars/GligorAvram/ProMan)
 ![shield](https://img.shields.io/github/license/GligorAvram/ProMan)
 
+
 <hr>
 
 </div>
@@ -26,6 +27,18 @@ A task management webapp built with vanilla Javascript
     <li>Run the application with Python</li>
 </ol>
 
+<hr>
+
+## Usage
+
+Track project progress by creating boards and columns for task statuses. Add cards to these statuses and drag them and drop
+them to other columns. Cards can be deleted when they are no longer needed.
+You can also register to create your own personal boards.
+
+![login](https://gligoravram.github.io/img/projectscreenshots/board-proman.png)
+![login](https://gligoravram.github.io/img/projectscreenshots/login-proman.png)
+![login](https://gligoravram.github.io/img/projectscreenshots/newboard-proman.jpg)
+![login](https://gligoravram.github.io/img/projectscreenshots/register-proman.jpg)
 <hr>
 
 ## How to contribute

@@ -17,6 +17,17 @@ A task management webapp built with vanilla Javascript
 
 </div>
 
+## Installation
+
+<ol>
+    <li>Clone the repository</li>
+    <li>Rename the .env.template to .env and fill in your database credentials</li>
+    <li>Create the Python virtual environment</li>
+    <li>Run the application with Python</li>
+</ol>
+
+<hr>
+
 ## How to contribute
 
 <ol>

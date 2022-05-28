@@ -13,9 +13,13 @@ A task management webapp built with vanilla Javascript
 ![shield](https://img.shields.io/github/stars/GligorAvram/ProMan)
 ![shield](https://img.shields.io/github/license/GligorAvram/ProMan)
 
-
 <hr>
 
+[Installation](#installation)
+[Usage](#Usage)
+[How to contribute](#how-to-contribute)
+[Licence](#Licence)
+[You may also like](#you-may-also-like)
 </div>
 
 ## Installation

@@ -15,9 +15,6 @@ A task management webapp built with vanilla Javascript
 
 <hr>
 
-
-
-
 </div>
 
 ## How to contribute
@@ -27,3 +24,5 @@ A task management webapp built with vanilla Javascript
 <li>Make changes and test</li>
 <li>Submit Pull Request with comprehensive description of changes</li>
 </ol>
+
+<hr>

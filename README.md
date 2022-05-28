@@ -2,6 +2,8 @@
 <div style="text-align: center;">
 <a  href="https://proman-codecool-rng.herokuapp.com/">Proman</a>
 
+A task management webapp built with vanilla Javascript
+
 <hr>
 
 ![shield](https://img.shields.io/badge/using-javascript-green)
